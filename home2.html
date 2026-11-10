@@ -1,0 +1,1310 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NaviFleet | Fleet Telematics & GPS Tracking Software</title>
+        <!-- Brand Favicons -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="apple-touch-icon" href="favicon.png">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <!-- Modern Tech Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <script src="tailwind.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        accent: 'var(--color-accent)',
+                        'accent-light': 'var(--color-accent-light)',
+                    }
+                }
+            }
+        };
+    </script>
+    <style>
+        /* --- Fleet Telematics & GPS Color Palette --- */
+        :root, html[data-theme='light'] {
+            --color-background: #F8FAFC;
+            --color-card-bg: #FFFFFF;
+            --color-primary-text: #0F172A;
+            --color-secondary-text: #475569;
+            --color-accent: #0284C7; /* Electric Telematics Blue */
+            --color-accent-light: #06B6D4; /* Signal Cyan */
+            --color-border: #E2E8F0;
+            --color-hover: #F1F5F9;
+            --color-footer-bg: #0B132B;
+            --color-footer-text: #CBD5E1; 
+        }
+        html[data-theme='dark'] {
+            --color-background: #0B1120;
+            --color-card-bg: #111B30;
+            --color-primary-text: #F8FAFC;
+            --color-secondary-text: #94A3B8;
+            --color-accent: #38BDF8;
+            --color-accent-light: #22D3EE;
+            --color-border: #1E293B;
+            --color-hover: #16223B;
+            --color-footer-bg: #060913;
+            --color-footer-text: #94A3B8; 
+        }
+        
+        body {
+            background-color: var(--color-background);
+            color: var(--color-primary-text);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+            overflow-x: hidden;
+        }
+
+        /* Sticky Solid Header (100% opaque, no bleed-through on scroll) */
+        #top-header-wrapper {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background-color: var(--color-background) !important;
+        }
+        #main-header {
+            background-color: var(--color-background) !important;
+            opacity: 1 !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+        }
+        #top-header-wrapper.scrolled #main-header {
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+            border-bottom-color: rgba(2, 132, 199, 0.2);
+        }
+        html[data-theme='dark'] #top-header-wrapper.scrolled #main-header {
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+            border-bottom-color: rgba(56, 189, 248, 0.2);
+        }
+        
+        .font-heading {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .text-primary-text { color: var(--color-primary-text); }
+        .text-secondary-text { color: var(--color-secondary-text); }
+        .text-accent { color: var(--color-accent); }
+        .text-accent-light { color: var(--color-accent-light); }
+        .bg-background { background-color: var(--color-background); }
+        .bg-card { background-color: var(--color-card-bg); }
+        .bg-hover { background-color: var(--color-hover); }
+        .border-border { border-color: var(--color-border); }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #0284c7 0%, #06b6d4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        html[data-theme='dark'] .text-gradient {
+            background: linear-gradient(135deg, #38bdf8 0%, #22d3ee 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        #main-footer {
+            background-color: var(--color-footer-bg);
+            color: var(--color-footer-text);
+        }
+        #main-footer .footer-heading {
+            color: #38BDF8 !important;
+        }
+        #main-footer .footer-link:hover {
+            color: var(--color-accent-light);
+            padding-left: 4px;
+            transition: all 0.2s ease;
+        }
+
+        /* Nav Link Pill Styling */
+        .nav-link {
+            position: relative;
+            transition: all 0.2s ease;
+            padding: 0.5rem 0.9rem;
+            border-radius: 9999px;
+            white-space: nowrap;
+            font-weight: 500;
+            color: var(--color-primary-text);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            cursor: pointer;
+            font-size: 0.88rem;
+        }
+        .nav-link:hover, .nav-link.active {
+            background-color: var(--color-accent);
+            color: #ffffff !important;
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
+        }
+        .nav-link:hover i, .nav-link.active i,
+        .nav-link:hover svg, .nav-link.active svg {
+            color: #ffffff !important;
+        }
+
+        /* DROPDOWNS */
+        .dropdown-wrapper { position: relative; }
+        .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            background-color: var(--color-card-bg);
+            border: 1px solid var(--color-border);
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            min-width: 175px;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-8px);
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow: hidden;
+        }
+        .dropdown-wrapper:hover .dropdown-menu {
+            opacity: 1; 
+            visibility: visible; 
+            transform: translateY(0);
+            display: block;
+        }
+        .dropdown-menu a {
+            display: block;
+            padding: 0.65rem 1.15rem;
+            color: var(--color-primary-text);
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            border-bottom: 1px solid var(--color-border);
+        }
+        .dropdown-menu a:last-child { border-bottom: none; }
+        .dropdown-menu a:hover {
+            background-color: var(--color-hover);
+            color: var(--color-accent);
+            padding-left: 1.35rem;
+        }
+
+        @media (max-width: 1279px) {
+            .dropdown-menu { 
+                position: static; 
+                display: none; 
+                opacity: 1; 
+                visibility: visible; 
+                transform: none; 
+                box-shadow: none; 
+                border: none;
+                background-color: transparent;
+                min-width: 100%;
+            }
+            .dropdown-wrapper:hover .dropdown-menu { display: block; }
+        }
+
+        /* Buttons */
+        .btn-primary {
+            background: linear-gradient(135deg, #0284C7 0%, #06B6D4 100%);
+            color: white;
+            transition: all 0.25s ease;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .btn-primary:hover {
+            opacity: 0.95;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 22px rgba(2, 132, 199, 0.4);
+        }
+        .btn-outline {
+            background: transparent;
+            color: var(--color-accent);
+            border: 1.5px solid var(--color-accent);
+            transition: all 0.25s ease;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .btn-outline:hover {
+            background: var(--color-accent);
+            color: white;
+            box-shadow: 0 6px 18px rgba(2, 132, 199, 0.3);
+        }
+    </style>
+</head>
+<body class="antialiased flex flex-col min-h-screen">
+
+    <!-- Sticky Top Header Wrapper -->
+    <div id="top-header-wrapper" class="sticky top-0 z-[1000] w-full">
+        <!-- Top Status Announcement Bar (Responsive across Mobile, Tablet & Desktop) -->
+        <div id="top-announcement" class="bg-slate-900 text-slate-300 text-xs py-2 px-3 sm:px-6 border-b border-slate-800">
+            <div class="max-w-screen-2xl mx-auto flex justify-between items-center gap-2 overflow-hidden">
+                <div class="flex items-center gap-2 shrink-0">
+                    <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 shrink-0">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span> Live GPS Grid
+                    </span>
+                    <span class="hidden sm:inline text-slate-400 text-[11px] sm:text-xs">| 99.99% Telematics Uptime</span>
+                    <span class="hidden xl:inline text-slate-400 text-xs">• 42,800+ Assets Tracked Globally</span>
+                </div>
+                <div class="flex items-center gap-3 sm:gap-4 text-slate-400 text-xs shrink-0">
+                    <span class="hidden md:flex items-center gap-1 text-[11px] sm:text-xs"><i class="fas fa-headset text-accent-light"></i> 1-800-555-FLEET</span>
+                    <a href="login.html" class="hover:text-white transition flex items-center gap-1 text-[11px] sm:text-xs"><i class="fas fa-user-lock text-accent"></i> Dispatcher Portal</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Navigation Header -->
+        <header class="w-full bg-background shadow-sm border-b border-border transition-all duration-300" id="main-header">
+            <nav class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex items-center justify-between h-[80px] relative">
+            
+            <!-- Logo with dynamic GPS / Telematics Icon (Single line, no wrapping) -->
+            <a href="index.html" class="flex items-center gap-2.5 sm:gap-3 shrink-0 group whitespace-nowrap z-10">
+                <div class="w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center rounded-xl bg-gradient-to-tr from-sky-600 to-cyan-500 text-white shadow-md shadow-sky-500/25 relative overflow-hidden group-hover:scale-105 transition-all duration-300 shrink-0">
+                    <i class="fas fa-satellite text-base sm:text-lg group-hover:rotate-12 transition-transform duration-300"></i>
+                    <span class="absolute -top-1 -right-1 flex h-2.5 w-2.5 sm:h-3 sm:w-3">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-300 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2.5 w-2.5 sm:h-3 sm:w-3 bg-emerald-400 border-2 border-white"></span>
+                    </span>
+                </div>
+                <div class="flex flex-col whitespace-nowrap">
+                    <span class="text-xl sm:text-2xl font-heading font-black tracking-tight flex items-center gap-1 leading-none whitespace-nowrap">
+                        <span class="text-primary-text">NAVI</span><span class="text-accent">FLEET</span>
+                    </span>
+                    <span class="text-[9px] sm:text-[10px] tracking-wider uppercase font-semibold text-secondary-text mt-0.5 whitespace-nowrap">Telematics & GPS Tracking</span>
+                </div>
+            </a>
+
+            <!-- Desktop Navigation Links (Centered Neat Pill Container - Perfectly Centered in Navbar) -->
+            <div class="hidden xl:flex items-center justify-center absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-auto">
+                <div class="flex items-center space-x-1 lg:space-x-1.5 rtl:space-x-reverse text-primary-text font-medium text-sm lg:text-base bg-hover/60 p-1.5 rounded-full border border-border/60 shadow-inner">
+                    
+                    <!-- 1. Home Dropdown (Clean Home 1 and Home 2) -->
+                    <div class="dropdown-wrapper">
+                        <button class="nav-link flex items-center gap-1" id="home-dropdown-btn">
+                            <i class="fas fa-home text-xs opacity-75"></i>
+                            Home
+                            <svg class="w-3.5 h-3.5 transition-transform duration-200 text-inherit" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                        <div class="dropdown-menu mt-2">
+                            <a href="index.html">Home 1</a>
+                            <a href="home2.html">Home 2</a>
+                        </div>
+                    </div>
+
+                    <!-- 2. Features -->
+                    <a href="features.html" class="nav-link">
+                        <i class="fas fa-layer-group text-xs opacity-75"></i>
+                        Features
+                    </a>
+
+                    <!-- 3. Industries -->
+                    <a href="industries.html" class="nav-link">
+                        <i class="fas fa-city text-xs opacity-75"></i>
+                        Industries
+                    </a>
+
+                    <!-- 4. Pricing Plans -->
+                    <a href="pricing.html" class="nav-link">
+                        <i class="fas fa-tags text-xs opacity-75"></i>
+                        Pricing Plans
+                    </a>
+
+                    <!-- 5. About -->
+                    <a href="about.html" class="nav-link">
+                        <i class="fas fa-circle-info text-xs opacity-75"></i>
+                        About
+                    </a>
+
+                    <!-- 6. Contact -->
+                    <a href="contact.html" class="nav-link">
+                        <i class="fas fa-envelope text-xs opacity-75"></i>
+                        Contact
+                    </a>
+
+                    <!-- 7. Dashboard Dropdown (Clean Admin Dashboard and User Dashboard) -->
+                    <div class="dropdown-wrapper">
+                        <button class="nav-link flex items-center gap-1" id="dashboard-dropdown-btn">
+                            <i class="fas fa-chart-line text-xs opacity-75"></i>
+                            Dashboard
+                            <svg class="w-3.5 h-3.5 transition-transform duration-200 text-inherit" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                        <div class="dropdown-menu mt-2">
+                            <a href="admin-dashboard.html">Admin Dashboard</a>
+                            <a href="user-dashboard.html">User Dashboard</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Action Controls (Clean Right Side without Launch Dashboard) -->
+            <div class="hidden xl:flex items-center space-x-3 justify-end z-10">
+                <button id="theme-toggle" class="icon-btn text-primary-text hover:text-accent p-2 rounded-full transition duration-200 bg-hover/60 border border-border/60" title="Toggle Dark/Light Mode">
+                    <svg class="w-5 h-5 light-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                    <svg class="w-5 h-5 dark-icon hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                </button>
+                <button id="lang-icon" class="text-primary-text hover:text-accent p-2 rounded-full transition duration-200 bg-hover/60 border border-border/60" title="Toggle RTL/LTR">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7.5 21 3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
+                    </svg>
+                </button>
+                <div class="flex items-center gap-2.5 ms-2">
+                    <a href="login.html" class="btn-outline px-5 py-2.5 rounded-full text-xs font-semibold flex items-center gap-1.5 shadow-sm">
+                        <i class="fas fa-right-to-bracket text-xs"></i> Login Portal
+                    </a>
+                </div>
+            </div>
+
+            <!-- Mobile Menu Trigger (Clean right side: Only Hamburger Button) -->
+            <div class="xl:hidden flex items-center justify-end z-10">
+                <button id="mobile-menu-open" class="icon-btn text-primary-text hover:text-accent p-2.5 rounded-full bg-hover border border-border/60 transition shadow-sm" aria-label="Open Navigation Menu">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+                </button>
+            </div>
+        </nav>
+    </header>
+    </div>
+
+    <!-- NEAT MAIN CONTENT LAYOUT (Dashboard positioned at the very end before footer) -->
+    <main class="flex-grow">
+<!-- ============================================================ -->
+<!-- HOME2.HTML — 6-SECTION HOME PAGE (GPS TRACKING SOFTWARE)     -->
+<!-- PASTE THIS BLOCK INSIDE <main> ... </main>                   -->
+<!-- NEW: Full-image hero + 5 unique balanced section layouts    -->
+<!-- ============================================================ -->
+
+
+<!-- ============================================================
+     SECTION 1 — HERO / INTRODUCTION
+     Layout: FULL-BLEED IMAGE BACKGROUND + CENTERED TEXT
+     ============================================================ -->
+<section class="relative overflow-hidden">
+    <!-- Full-bleed hero image -->
+    <div class="absolute inset-0 -z-20">
+        <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=1920&q=85"
+             alt="GPS tracking map and fleet routes"
+             class="w-full h-full object-cover"
+             loading="eager">
+    </div>
+    <!-- Dark overlay for readability (works in both themes) -->
+    <div class="absolute inset-0 -z-10 bg-slate-950/70"></div>
+    <!-- subtle grid pattern -->
+    <div class="absolute inset-0 -z-10 opacity-15 pointer-events-none"
+         style="background-image: linear-gradient(#38bdf8 1px, transparent 1px), linear-gradient(90deg, #38bdf8 1px, transparent 1px); background-size: 44px 44px;"></div>
+
+    <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="min-h-[560px] sm:min-h-[620px] lg:min-h-[700px] flex flex-col items-center justify-center text-center py-20">
+
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white/10 text-sky-300 border border-white/20 backdrop-blur-sm mb-6">
+                <i class="fas fa-location-crosshairs"></i> Precision GPS Tracking Software
+            </div>
+
+            <h1 class="font-heading text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight text-white leading-[1.1] max-w-4xl">
+                Know Where Every Asset Moves —<br class="hidden sm:block">
+                <span class="bg-gradient-to-r from-sky-400 to-cyan-400 bg-clip-text text-transparent">In Real Time</span>
+            </h1>
+
+            <p class="text-base sm:text-lg lg:text-xl text-slate-200 max-w-2xl mx-auto mt-6 leading-relaxed">
+                A single GPS platform for vehicles, trailers, equipment and high-value cargo.
+                1-second refresh, sub-meter accuracy and 12-month route history — all in one clean dashboard.
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-9 w-full sm:w-auto">
+                <a href="#gps-features" class="btn-primary px-8 py-3.5 rounded-full text-base font-semibold flex items-center justify-center gap-2 shadow-lg">
+                    <i class="fas fa-satellite-dish"></i> Explore Features
+                </a>
+                <a href="#gps-cta" class="px-7 py-3.5 rounded-full text-base font-semibold flex items-center justify-center gap-2 border border-white/30 text-white bg-white/5 hover:bg-white/15 backdrop-blur-sm transition-all">
+                    <i class="fas fa-rocket"></i> Start Free Trial
+                </a>
+            </div>
+
+            <!-- Trust chips below CTA -->
+            <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 mt-10 text-xs text-slate-300">
+                <span class="inline-flex items-center gap-1.5"><i class="fas fa-check text-emerald-400"></i> No credit card</span>
+                <span class="inline-flex items-center gap-1.5"><i class="fas fa-check text-emerald-400"></i> 14-day free trial</span>
+                <span class="inline-flex items-center gap-1.5"><i class="fas fa-check text-emerald-400"></i> Free demo hardware</span>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- ============================================================
+     SECTION 2 — TRACKING CATEGORIES
+     Layout: HORIZONTAL SCROLL ROW (4 cards, snap-scroll on
+     mobile, 4-col grid on desktop) + centered heading
+     ============================================================ -->
+<section id="gps-categories" class="py-20 border-b border-border bg-background">
+    <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <!-- Centered heading -->
+        <div class="text-center max-w-3xl mx-auto mb-12">
+            <span class="inline-block px-3.5 py-1 rounded-full text-xs font-semibold bg-sky-500/10 text-accent uppercase tracking-wider mb-3">
+                What You Can Track
+            </span>
+            <h2 class="font-heading text-3xl sm:text-4xl font-bold text-primary-text">
+                One Platform. Every Asset You Move.
+            </h2>
+            <p class="text-secondary-text mt-3 text-base">
+                GPS tracking built for mixed fleets — from company vans to heavy trailers, powered equipment and temperature-sensitive cargo.
+            </p>
+        </div>
+
+        <!-- Horizontal snap row on mobile, grid on desktop -->
+        <div class="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-thin sm:grid sm:grid-cols-2 lg:grid-cols-4 sm:overflow-visible sm:pb-0 sm:snap-none">
+
+            <!-- Card 1 -->
+            <article class="snap-start shrink-0 w-[80%] xs:w-[70%] sm:w-auto rounded-2xl bg-card border border-border overflow-hidden hover:border-accent/50 hover:shadow-xl transition-all duration-300 group flex flex-col">
+                <div class="h-40 w-full relative overflow-hidden">
+                    <img src="assets/c1.jpg"
+                         alt="Commercial truck GPS tracking"
+                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                         loading="lazy">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent"></div>
+                    <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-bold bg-sky-500/90 text-white backdrop-blur-sm">
+                        <i class="fas fa-truck mr-1"></i> Vehicles
+                    </span>
+                </div>
+                <div class="p-5 flex-1 flex flex-col">
+                    <h3 class="font-heading font-bold text-lg text-primary-text mb-2 text-center">Vehicle Tracking</h3>
+                    <p class="text-sm text-secondary-text leading-relaxed text-center flex-1">
+                        Live location, speed, ignition status and trip history for every car, van and truck.
+                    </p>
+                </div>
+            </article>
+
+            <!-- Card 2 -->
+            <article class="snap-start shrink-0 w-[80%] xs:w-[70%] sm:w-auto rounded-2xl bg-card border border-border overflow-hidden hover:border-accent/50 hover:shadow-xl transition-all duration-300 group flex flex-col">
+                <div class="h-40 w-full relative overflow-hidden">
+                    <img src="assets/c2.jpg"
+                         alt="Cargo trailer GPS tracker"
+                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                         loading="lazy">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent"></div>
+                    <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-500/90 text-white backdrop-blur-sm">
+                        <i class="fas fa-trailer mr-1"></i> Trailers
+                    </span>
+                </div>
+                <div class="p-5 flex-1 flex flex-col">
+                    <h3 class="font-heading font-bold text-lg text-primary-text mb-2 text-center">Trailer & Cargo</h3>
+                    <p class="text-sm text-secondary-text leading-relaxed text-center flex-1">
+                        Battery-powered trackers for unpowered trailers and high-value shipments.
+                    </p>
+                </div>
+            </article>
+
+            <!-- Card 3 -->
+            <article class="snap-start shrink-0 w-[80%] xs:w-[70%] sm:w-auto rounded-2xl bg-card border border-border overflow-hidden hover:border-accent/50 hover:shadow-xl transition-all duration-300 group flex flex-col">
+                <div class="h-40 w-full relative overflow-hidden">
+                    <img src="assets/c3.jpg"
+                         alt="Heavy equipment GPS tracking"
+                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                         loading="lazy">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent"></div>
+                    <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-500/90 text-white backdrop-blur-sm">
+                        <i class="fas fa-tractor mr-1"></i> Equipment
+                    </span>
+                </div>
+                <div class="p-5 flex-1 flex flex-col">
+                    <h3 class="font-heading font-bold text-lg text-primary-text mb-2 text-center">Heavy Equipment</h3>
+                    <p class="text-sm text-secondary-text leading-relaxed text-center flex-1">
+                        Track excavators, generators and plant hire assets by engine hours and geofence.
+                    </p>
+                </div>
+            </article>
+
+            <!-- Card 4 -->
+            <article class="snap-start shrink-0 w-[80%] xs:w-[70%] sm:w-auto rounded-2xl bg-card border border-border overflow-hidden hover:border-accent/50 hover:shadow-xl transition-all duration-300 group flex flex-col">
+                <div class="h-40 w-full relative overflow-hidden">
+                    <img src="assets/c4.jpg"
+                         alt="Cold chain temperature sensor tracking"
+                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                         loading="lazy">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent"></div>
+                    <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-bold bg-cyan-500/90 text-white backdrop-blur-sm">
+                        <i class="fas fa-temperature-snowflake mr-1"></i> Cold Chain
+                    </span>
+                </div>
+                <div class="p-5 flex-1 flex flex-col">
+                    <h3 class="font-heading font-bold text-lg text-primary-text mb-2 text-center">Cold Chain Sensors</h3>
+                    <p class="text-sm text-secondary-text leading-relaxed text-center flex-1">
+                        Wireless temperature sensors keep perishables within compliance bands.
+                    </p>
+                </div>
+            </article>
+
+        </div>
+
+        <!-- Mobile swipe hint -->
+        <p class="sm:hidden text-center text-[11px] text-secondary-text mt-4">
+            <i class="fas fa-arrows-left-right text-accent"></i> Swipe to see all categories
+        </p>
+
+    </div>
+</section>
+
+
+<!-- ============================================================
+     SECTION 3 — KEY FEATURES
+     Layout: STAGGERED ZIG-ZAG ICON CARDS (large numbered
+     feature list with offset alignment per row)
+     ============================================================ -->
+<section id="gps-features" class="py-20 border-b border-border bg-hover/20">
+    <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <!-- Centered heading -->
+        <div class="text-center max-w-3xl mx-auto mb-14">
+            <span class="inline-block px-3.5 py-1 rounded-full text-xs font-semibold bg-sky-500/10 text-accent uppercase tracking-wider mb-3">
+                Core GPS Features
+            </span>
+            <h2 class="font-heading text-3xl sm:text-4xl font-bold text-primary-text">
+                Powerful Tools, Zero Complexity
+            </h2>
+            <p class="text-secondary-text mt-3 text-base">
+                Every feature is built to answer one question fast: <span class="font-semibold text-primary-text">where is my asset, and what is it doing?</span>
+            </p>
+        </div>
+
+        <!-- Zig-zag feature rows -->
+        <div class="space-y-4 lg:space-y-6 max-w-5xl mx-auto">
+
+            <!-- Feature 1: number left, content right -->
+            <div class="rounded-2xl bg-card border border-border p-6 sm:p-8 hover:border-accent/40 hover:shadow-lg transition-all flex flex-col sm:flex-row items-center sm:items-start gap-5">
+                <div class="w-14 h-14 shrink-0 rounded-2xl bg-sky-500/10 text-accent flex items-center justify-center text-xl font-heading font-bold">
+                    01
+                </div>
+                <div class="text-center sm:text-start flex-1">
+                    <div class="flex items-center justify-center sm:justify-start gap-2 mb-2">
+                        <i class="fas fa-map-location-dot text-accent text-sm"></i>
+                        <h3 class="font-heading font-bold text-xl text-primary-text">Live Map & Route Playback</h3>
+                    </div>
+                    <p class="text-sm text-secondary-text leading-relaxed">
+                        Watch every unit move in real time on satellite or street maps. Scrub back through up to 12 months of route history with stop, idle and speed overlays — perfect for dispute resolution and driver coaching.
+                    </p>
+                </div>
+                <div class="hidden sm:block shrink-0">
+                    <img src="https://images.unsplash.com/photo-1519003722824-194d4455a60c?auto=format&fit=crop&w=400&q=80"
+                         alt="Live GPS map tracking"
+                         class="w-28 h-24 rounded-xl object-cover border border-border"
+                         loading="lazy">
+                </div>
+            </div>
+
+            <!-- Feature 2: offset right (visually staggered) -->
+            <div class="rounded-2xl bg-card border border-border p-6 sm:p-8 hover:border-accent/40 hover:shadow-lg transition-all flex flex-col sm:flex-row items-center sm:items-start gap-5 sm:ms-8">
+                <div class="w-14 h-14 shrink-0 rounded-2xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center text-xl font-heading font-bold">
+                    02
+                </div>
+                <div class="text-center sm:text-start flex-1">
+                    <div class="flex items-center justify-center sm:justify-start gap-2 mb-2">
+                        <i class="fas fa-draw-polygon text-emerald-500 text-sm"></i>
+                        <h3 class="font-heading font-bold text-xl text-primary-text">Smart Geofence Alerts</h3>
+                    </div>
+                    <p class="text-sm text-secondary-text leading-relaxed">
+                        Draw unlimited polygon or circular zones on the map. Get instant push, SMS or email alerts the moment any asset enters or leaves — including after-hours movement that shouldn’t be happening.
+                    </p>
+                </div>
+                <div class="hidden sm:block shrink-0">
+                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=400&q=80"
+                         alt="Geofence alert zones"
+                         class="w-28 h-24 rounded-xl object-cover border border-border"
+                         loading="lazy">
+                </div>
+            </div>
+
+            <!-- Feature 3: back to left -->
+            <div class="rounded-2xl bg-card border border-border p-6 sm:p-8 hover:border-accent/40 hover:shadow-lg transition-all flex flex-col sm:flex-row items-center sm:items-start gap-5">
+                <div class="w-14 h-14 shrink-0 rounded-2xl bg-amber-500/10 text-amber-500 flex items-center justify-center text-xl font-heading font-bold">
+                    03
+                </div>
+                <div class="text-center sm:text-start flex-1">
+                    <div class="flex items-center justify-center sm:justify-start gap-2 mb-2">
+                        <i class="fas fa-gauge-high text-amber-500 text-sm"></i>
+                        <h3 class="font-heading font-bold text-xl text-primary-text">Driver Behavior Scoring</h3>
+                    </div>
+                    <p class="text-sm text-secondary-text leading-relaxed">
+                        Speeding, harsh braking, rapid acceleration and cornering are logged automatically into a 100-point safety score for every driver. Identify coaching opportunities before they turn into claims.
+                    </p>
+                </div>
+                <div class="hidden sm:block shrink-0">
+                    <img src="https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&w=400&q=80"
+                         alt="Driver behavior scoring"
+                         class="w-28 h-24 rounded-xl object-cover border border-border"
+                         loading="lazy">
+                </div>
+            </div>
+
+            <!-- Feature 4: offset right -->
+            <div class="rounded-2xl bg-card border border-border p-6 sm:p-8 hover:border-accent/40 hover:shadow-lg transition-all flex flex-col sm:flex-row items-center sm:items-start gap-5 sm:ms-8">
+                <div class="w-14 h-14 shrink-0 rounded-2xl bg-indigo-500/10 text-indigo-500 flex items-center justify-center text-xl font-heading font-bold">
+                    04
+                </div>
+                <div class="text-center sm:text-start flex-1">
+                    <div class="flex items-center justify-center sm:justify-start gap-2 mb-2">
+                        <i class="fas fa-chart-pie text-indigo-500 text-sm"></i>
+                        <h3 class="font-heading font-bold text-xl text-primary-text">Reports & Analytics</h3>
+                    </div>
+                    <p class="text-sm text-secondary-text leading-relaxed">
+                        Automated daily, weekly and monthly reports for distance, idle time, fuel and safety — exportable to CSV or PDF and delivered straight to your inbox.
+                    </p>
+                </div>
+                <div class="hidden sm:block shrink-0">
+                    <img src="https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?auto=format&fit=crop&w=400&q=80"
+                         alt="Analytics dashboard"
+                         class="w-28 h-24 rounded-xl object-cover border border-border"
+                         loading="lazy">
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- ============================================================
+     SECTION 4 — WHY CHOOSE US / BENEFITS
+     Layout: IMAGE LEFT + 2x2 MINI BENEFIT GRID RIGHT
+     (split layout, centered heading above)
+     ============================================================ -->
+<section id="gps-benefits" class="py-20 border-b border-border bg-background">
+    <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <!-- Centered heading -->
+        <div class="text-center max-w-3xl mx-auto mb-14">
+            <span class="inline-block px-3.5 py-1 rounded-full text-xs font-semibold bg-sky-500/10 text-accent uppercase tracking-wider mb-3">
+                Why Teams Choose Us
+            </span>
+            <h2 class="font-heading text-3xl sm:text-4xl font-bold text-primary-text">
+                Built for Accuracy, Speed & Peace of Mind
+            </h2>
+            <p class="text-secondary-text mt-3 text-base">
+                Most GPS platforms stop at a dot on a map. We deliver the full operational picture — hardware, software and support under one roof.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch">
+
+            <!-- Image left -->
+            <div class="lg:col-span-5 relative">
+                <div class="rounded-2xl overflow-hidden border border-border shadow-xl h-full min-h-[320px]">
+                    <img src="https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?auto=format&fit=crop&w=1200&q=80"
+                         alt="Fleet operations team monitoring GPS dashboard"
+                         class="w-full h-full object-cover"
+                         loading="lazy">
+                </div>
+                <!-- floating badge -->
+                <div class="absolute -bottom-4 left-4 sm:left-6 bg-card border border-border rounded-xl shadow-xl px-4 py-3 flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center text-lg">
+                        <i class="fas fa-shield-halved"></i>
+                    </div>
+                    <div>
+                        <div class="text-sm font-heading font-bold text-primary-text">99.99% Uptime</div>
+                        <div class="text-[11px] text-secondary-text">Independently monitored</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2x2 benefit grid right -->
+            <div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8 lg:mt-0">
+
+                <div class="rounded-xl bg-card border border-border p-5 hover:border-accent/40 hover:shadow-md transition-all">
+                    <div class="w-10 h-10 rounded-lg bg-sky-500/10 text-accent flex items-center justify-center text-base mb-3 mx-auto sm:mx-0">
+                        <i class="fas fa-crosshairs"></i>
+                    </div>
+                    <h3 class="font-heading font-bold text-base text-primary-text mb-1.5 text-center sm:text-start">Sub-Meter Accuracy</h3>
+                    <p class="text-sm text-secondary-text leading-relaxed text-center sm:text-start">
+                        Multi-constellation GNSS keeps positions locked in dense cities and remote yards.
+                    </p>
+                </div>
+
+                <div class="rounded-xl bg-card border border-border p-5 hover:border-accent/40 hover:shadow-md transition-all">
+                    <div class="w-10 h-10 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center text-base mb-3 mx-auto sm:mx-0">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3 class="font-heading font-bold text-base text-primary-text mb-1.5 text-center sm:text-start">1-Second Refresh</h3>
+                    <p class="text-sm text-secondary-text leading-relaxed text-center sm:text-start">
+                        Real-time updates that actually feel real-time — no 60-second gaps.
+                    </p>
+                </div>
+
+                <div class="rounded-xl bg-card border border-border p-5 hover:border-accent/40 hover:shadow-md transition-all">
+                    <div class="w-10 h-10 rounded-lg bg-amber-500/10 text-amber-500 flex items-center justify-center text-base mb-3 mx-auto sm:mx-0">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <h3 class="font-heading font-bold text-base text-primary-text mb-1.5 text-center sm:text-start">Instant Alerts</h3>
+                    <p class="text-sm text-secondary-text leading-relaxed text-center sm:text-start">
+                        Geofence, over-speed, tamper and low-battery alerts by push, SMS and email.
+                    </p>
+                </div>
+
+                <div class="rounded-xl bg-card border border-border p-5 hover:border-accent/40 hover:shadow-md transition-all">
+                    <div class="w-10 h-10 rounded-lg bg-indigo-500/10 text-indigo-500 flex items-center justify-center text-base mb-3 mx-auto sm:mx-0">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h3 class="font-heading font-bold text-base text-primary-text mb-1.5 text-center sm:text-start">Real Human Support</h3>
+                    <p class="text-sm text-secondary-text leading-relaxed text-center sm:text-start">
+                        Onboarding, install guidance and technical support from a team that answers in minutes.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ============================================================
+     SECTION 5 — TRUST / TESTIMONIALS
+     Layout: FEATURED TESTIMONIAL LEFT + STACKED SMALL
+     TESTIMONIALS RIGHT (asymmetric magazine-style)
+     ============================================================ -->
+<section id="gps-trust" class="py-20 border-b border-border bg-hover/20">
+    <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <!-- Centered heading -->
+        <div class="text-center max-w-3xl mx-auto mb-14">
+            <span class="inline-block px-3.5 py-1 rounded-full text-xs font-semibold bg-sky-500/10 text-accent uppercase tracking-wider mb-3">
+                Trusted by Operators
+            </span>
+            <h2 class="font-heading text-3xl sm:text-4xl font-bold text-primary-text">
+                Thousands of Assets Tracked. Zero Guesswork.
+            </h2>
+            <p class="text-secondary-text mt-3 text-base">
+                From independent couriers to national logistics fleets — here’s what our customers say about switching to our GPS platform.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+            <!-- Featured testimonial (left, spans 5) -->
+            <div class="lg:col-span-5 rounded-2xl bg-card border border-border p-8 flex flex-col justify-between items-center text-center relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-sky-500/5 rounded-full blur-2xl pointer-events-none"></div>
+                <div class="w-full flex flex-col items-center">
+                    <div class="flex items-center justify-center gap-1 text-amber-500 mb-5">
+                        <i class="fas fa-star text-sm"></i><i class="fas fa-star text-sm"></i><i class="fas fa-star text-sm"></i><i class="fas fa-star text-sm"></i><i class="fas fa-star text-sm"></i>
+                    </div>
+                    <p class="text-lg sm:text-xl font-heading font-semibold text-primary-text leading-relaxed text-center max-w-lg mx-auto">
+                        “We cut idle time by 31% in the first quarter. The geofence alerts alone paid for the subscription — our yard manager finally stopped chasing drivers by phone.”
+                    </p>
+                </div>
+                <div class="w-full mt-6 pt-5 border-t border-border flex items-center gap-3 justify-center">
+                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=160&h=160&q=80" alt="Rachel Lawson" class="w-12 h-12 rounded-full object-cover border-2 border-accent/30 shadow-sm shrink-0">
+                    <div class="text-start">
+                        <div class="text-sm font-bold text-primary-text">Rachel Lawson</div>
+                        <div class="text-xs text-secondary-text">Fleet Manager, Northline Logistics</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right column: stacked small testimonials + stats row -->
+            <div class="lg:col-span-7 flex flex-col gap-4">
+
+                <!-- Stats strip -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    <div class="text-center p-4 rounded-xl bg-card border border-border">
+                        <div class="text-xl font-heading font-extrabold text-accent">42.8k+</div>
+                        <div class="text-[11px] text-secondary-text mt-0.5">Units Tracked</div>
+                    </div>
+                    <div class="text-center p-4 rounded-xl bg-card border border-border">
+                        <div class="text-xl font-heading font-extrabold text-accent-light">120M+</div>
+                        <div class="text-[11px] text-secondary-text mt-0.5">Miles Logged</div>
+                    </div>
+                    <div class="text-center p-4 rounded-xl bg-card border border-border">
+                        <div class="text-xl font-heading font-extrabold text-emerald-500">4.9/5</div>
+                        <div class="text-[11px] text-secondary-text mt-0.5">Rating</div>
+                    </div>
+                    <div class="text-center p-4 rounded-xl bg-card border border-border">
+                        <div class="text-xl font-heading font-extrabold text-amber-500">24/7</div>
+                        <div class="text-[11px] text-secondary-text mt-0.5">Support</div>
+                    </div>
+                </div>
+
+                <!-- Small testimonial 1 -->
+                <div class="rounded-xl bg-card border border-border p-5 flex items-start gap-4">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=160&h=160&q=80" alt="Daniel Kim" class="w-11 h-11 shrink-0 rounded-full object-cover border-2 border-emerald-500/30 shadow-sm">
+                    <div class="flex-1">
+                        <div class="flex items-center justify-between mb-1.5">
+                            <div class="text-sm font-bold text-primary-text">Daniel Kim</div>
+                            <div class="flex items-center gap-0.5 text-amber-500">
+                                <i class="fas fa-star text-[10px]"></i><i class="fas fa-star text-[10px]"></i><i class="fas fa-star text-[10px]"></i><i class="fas fa-star text-[10px]"></i><i class="fas fa-star text-[10px]"></i>
+                            </div>
+                        </div>
+                        <div class="text-[11px] text-secondary-text mb-1.5">Operations Lead, Rapid Courier Co.</div>
+                        <p class="text-sm text-secondary-text leading-relaxed">
+                            “Plug-and-play install, dashboard live the same afternoon. Route playback has already settled two insurance disputes.”
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Small testimonial 2 -->
+                <div class="rounded-xl bg-card border border-border p-5 flex items-start gap-4">
+                    <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=160&h=160&q=80" alt="Sofia Martinez" class="w-11 h-11 shrink-0 rounded-full object-cover border-2 border-amber-500/30 shadow-sm">
+                    <div class="flex-1">
+                        <div class="flex items-center justify-between mb-1.5">
+                            <div class="text-sm font-bold text-primary-text">Sofia Martinez</div>
+                            <div class="flex items-center gap-0.5 text-amber-500">
+                                <i class="fas fa-star text-[10px]"></i><i class="fas fa-star text-[10px]"></i><i class="fas fa-star text-[10px]"></i><i class="fas fa-star text-[10px]"></i><i class="fas fa-star text-[10px]"></i>
+                            </div>
+                        </div>
+                        <div class="text-[11px] text-secondary-text mb-1.5">Director, Summit Freight Group</div>
+                        <p class="text-sm text-secondary-text leading-relaxed">
+                            “We track 240 trailers across three states. Battery-powered trackers mean zero wiring headaches, and the API feeds our TMS directly.”
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ============================================================
+     SECTION 6 — FINAL CTA / CLOSING
+     Layout: CENTERED NARROW CARD WITH ICON + HEADING + CTA
+     (clean, focused, strong close)
+     ============================================================ -->
+<section id="gps-cta" class="py-20 bg-background">
+    <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <div class="relative rounded-3xl overflow-hidden border border-border bg-card shadow-2xl max-w-4xl mx-auto">
+            <!-- gradient glow -->
+            <div class="absolute inset-0 -z-10 bg-gradient-to-br from-sky-500/10 via-transparent to-cyan-500/10"></div>
+            <div class="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-sky-500/10 blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-24 -left-24 w-72 h-72 rounded-full bg-cyan-500/10 blur-3xl pointer-events-none"></div>
+
+            <div class="px-6 sm:px-12 py-14 lg:py-16 text-center">
+                <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-tr from-sky-600 to-cyan-500 text-white flex items-center justify-center text-2xl shadow-lg shadow-sky-500/25 mb-6">
+                    <i class="fas fa-satellite-dish"></i>
+                </div>
+
+                <h2 class="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold text-primary-text leading-tight max-w-2xl mx-auto">
+                    Start Tracking in <span class="text-gradient">Under 24 Hours</span>
+                </h2>
+
+                <p class="text-secondary-text mt-4 text-base sm:text-lg leading-relaxed max-w-xl mx-auto">
+                    Get a free 14-day trial of the full GPS tracking platform. We’ll ship a demo tracker to your door, help you install it, and show you exactly where every asset moves — no credit card required.
+                </p>
+
+                <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mt-8">
+                    <a href="#contact" class="btn-primary px-8 py-3.5 rounded-full text-base font-semibold flex items-center justify-center gap-2">
+                        <i class="fas fa-rocket"></i> Start Free 14-Day Trial
+                    </a>
+                    <a href="#contact" class="btn-outline px-7 py-3.5 rounded-full text-base font-semibold flex items-center justify-center gap-2">
+                        <i class="fas fa-phone"></i> Talk to a Specialist
+                    </a>
+                </div>
+
+                <div class="mt-8 pt-6 border-t border-border flex flex-wrap justify-center gap-x-6 gap-y-2 text-xs text-secondary-text">
+                    <span class="inline-flex items-center gap-1.5"><i class="fas fa-check text-emerald-500"></i> No credit card required</span>
+                    <span class="inline-flex items-center gap-1.5"><i class="fas fa-check text-emerald-500"></i> Free demo hardware</span>
+                    <span class="inline-flex items-center gap-1.5"><i class="fas fa-check text-emerald-500"></i> Cancel anytime</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+    </main>
+
+    <!-- FOOTER: Telematics & GPS Tracking Software -->
+    <footer id="main-footer" class="pt-16 pb-8 transition-colors duration-300">
+        <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-slate-800">
+                
+                <div class="lg:col-span-2">
+                    <a href="index.html" class="flex items-center gap-3 group">
+                        <div class="w-11 h-11 flex items-center justify-center rounded-xl bg-gradient-to-tr from-sky-600 to-cyan-500 text-white shadow-md shadow-sky-500/25 relative overflow-hidden group-hover:scale-105 transition-all duration-300">
+                            <i class="fas fa-satellite text-lg group-hover:rotate-12 transition-transform duration-300"></i>
+                            <span class="absolute -top-1 -right-1 flex h-3 w-3">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-300 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-400 border-2 border-slate-900"></span>
+                            </span>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-2xl font-heading font-black tracking-tight flex items-center gap-1 text-white">
+                                <span>NAVI</span><span class="text-sky-400">FLEET</span>
+                            </span>
+                            <span class="text-[10px] tracking-wider uppercase font-semibold text-slate-400 -mt-1">Telematics & GPS Tracking</span>
+                        </div>
+                    </a>
+                    <p class="text-xs leading-relaxed max-w-sm text-slate-400 mt-4">
+                        Industry-standard Fleet Telematics & GPS Tracking Software. Delivering end-to-end live vehicle visibility, automated driver safety grading, cold-chain sensor audits, and intelligent fuel savings worldwide.
+                    </p>
+                    <div class="flex gap-4 mt-6">
+                        <a href="#" class="w-8 h-8 rounded-lg bg-slate-800/80 hover:bg-sky-600 flex items-center justify-center text-white transition text-xs"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="w-8 h-8 rounded-lg bg-slate-800/80 hover:bg-sky-600 flex items-center justify-center text-white transition text-xs"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="w-8 h-8 rounded-lg bg-slate-800/80 hover:bg-sky-600 flex items-center justify-center text-white transition text-xs"><i class="fab fa-github"></i></a>
+                        <a href="#" class="w-8 h-8 rounded-lg bg-slate-800/80 hover:bg-sky-600 flex items-center justify-center text-white transition text-xs"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="footer-heading font-bold text-sm mb-4">Telematics Modules</h4>
+                    <ul class="space-y-2.5 text-xs text-slate-400">
+                        <li><a href="admin-dashboard.html" class="footer-link">Live Vehicle Tracking</a></li>
+                        <li><a href="admin-dashboard.html" class="footer-link">Driver Scorecard Engine</a></li>
+                        <li><a href="admin-dashboard.html" class="footer-link">Fuel Theft & Siphon Audit</a></li>
+                        <li><a href="features.html" class="footer-link">Geo-Fencing & Instant Alerts</a></li>
+                        <li><a href="features.html" class="footer-link">OBD-II Engine Diagnostics</a></li>
+                        <li><a href="features.html" class="footer-link">ELD & IFTA State Mileage</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="footer-heading font-bold text-sm mb-4">Industries</h4>
+                    <ul class="space-y-2.5 text-xs text-slate-400">
+                        <li><a href="industries.html" class="footer-link">Long-Haul Freight & Trucking</a></li>
+                        <li><a href="industries.html" class="footer-link">Last-Mile Courier & Delivery</a></li>
+                        <li><a href="industries.html" class="footer-link">Cold-Chain Reefer Fleets</a></li>
+                        <li><a href="industries.html" class="footer-link">Construction Heavy Machinery</a></li>
+                        <li><a href="industries.html" class="footer-link">Emergency Response & Transit</a></li>
+                        <li><a href="pricing.html" class="footer-link">Pricing Plans</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="footer-heading font-bold text-sm mb-4">Operations Center</h4>
+                    <ul class="space-y-3 text-xs text-slate-400">
+                        <li class="flex items-start gap-2.5">
+                            <i class="fas fa-location-dot text-sky-400 mt-1"></i>
+                            <span>Telematics Data Center 4<br>Silicon Gateway, CA 94016</span>
+                        </li>
+                        <li class="flex items-start gap-2.5">
+                            <i class="fas fa-phone text-sky-400 mt-1"></i>
+                            <span>+1 (800) 555-FLEET (24/7)</span>
+                        </li>
+                        <li class="flex items-start gap-2.5">
+                            <i class="fas fa-envelope text-sky-400 mt-1"></i>
+                            <span>dispatch@navifleet.io</span>
+                        </li>
+                    </ul>
+                    <div class="mt-4">
+                        <a href="#login-portal" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-sky-500/20 text-sky-300 border border-sky-500/30 text-xs font-semibold hover:bg-sky-500/30 transition">
+                            <i class="fas fa-lock text-[10px]"></i> Dispatch Portal Login
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="pt-8 flex flex-col sm:flex-row justify-between items-center text-slate-500 text-xs gap-3">
+                <div>© 2026 NaviFleet Technologies Inc. Fleet Telematics & GPS Tracking Software. All rights reserved.</div>
+                <div class="flex gap-4">
+                    <a href="#" class="hover:text-slate-300">Privacy Policy</a>
+                    <a href="#" class="hover:text-slate-300">Terms of Service</a>
+                    <a href="#" class="hover:text-slate-300">Security & GDPR</a>
+                    <a href="#" class="hover:text-slate-300">API Documentation</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MOBILE NAVIGATION DRAWER -->
+    <div id="mobile-menu-drawer" class="fixed inset-0 z-[9999] pointer-events-none">
+        <div id="drawer-backdrop" class="absolute inset-0 bg-black opacity-0 transition-opacity duration-200 pointer-events-none"></div>
+        <div id="drawer-content" class="absolute top-0 start-0 end-0 bg-background rounded-b-2xl shadow-2xl p-6 xl:hidden max-h-[90vh] overflow-y-auto transform translate-y-[-100%] transition-transform duration-200 ease-out will-change-transform">
+            <div class="flex justify-between items-center pb-4 border-b border-border">
+                <a href="index.html" class="flex items-center gap-2.5 whitespace-nowrap">
+                    <div class="w-10 h-10 flex items-center justify-center rounded-xl bg-gradient-to-tr from-sky-600 to-cyan-500 text-white shadow-sm relative overflow-hidden shrink-0">
+                        <i class="fas fa-satellite text-base"></i>
+                        <span class="absolute -top-1 -right-1 flex h-2.5 w-2.5">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-300 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400 border border-white"></span>
+                        </span>
+                    </div>
+                    <div class="flex flex-col whitespace-nowrap">
+                        <span class="text-xl font-heading font-black tracking-tight"><span class="text-primary-text">NAVI</span><span class="text-accent">FLEET</span></span>
+                        <span class="text-[9px] tracking-wider uppercase font-semibold text-secondary-text whitespace-nowrap -mt-1">Telematics & GPS Tracking</span>
+                    </div>
+                </a>
+                <button id="mobile-menu-close" class="text-primary-text hover:text-accent p-2 rounded-full hover:bg-hover transition" aria-label="Close Navigation Menu">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            
+            <nav class="flex flex-col space-y-2 py-4 text-sm font-medium">
+                <!-- Mobile Home Dropdown -->
+                <div>
+                    <button class="block text-primary-text font-semibold text-base py-2 w-full text-start flex justify-between items-center" id="mobile-homes-toggle">
+                        <span class="flex items-center gap-2"><i class="fas fa-home text-accent text-xs"></i> Home</span>
+                        <svg class="w-4 h-4 transform transition-transform duration-200 text-primary-text" id="homes-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div id="mobile-homes-menu" class="hidden ps-4 flex flex-col space-y-2 mt-1 border-s-2 border-border py-1">
+                        <a href="index.html" class="block text-secondary-text hover:text-accent text-sm py-1">Home 1</a>
+                        <a href="home2.html" class="block text-secondary-text hover:text-accent text-sm py-1">Home 2</a>
+                    </div>
+                </div>
+                
+                <a href="features.html" class="block text-primary-text font-semibold text-base py-2 flex items-center gap-2">
+                    <i class="fas fa-layer-group text-accent text-xs"></i> Features
+                </a>
+                <a href="industries.html" class="block text-primary-text font-semibold text-base py-2 flex items-center gap-2">
+                    <i class="fas fa-city text-accent text-xs"></i> Industries
+                </a>
+                <a href="pricing.html" class="block text-primary-text font-semibold text-base py-2 flex items-center gap-2">
+                    <i class="fas fa-tags text-accent text-xs"></i> Pricing Plans
+                </a>
+                <a href="about.html" class="block text-primary-text font-semibold text-base py-2 flex items-center gap-2">
+                    <i class="fas fa-circle-info text-accent text-xs"></i> About
+                </a>
+                <a href="contact.html" class="block text-primary-text font-semibold text-base py-2 flex items-center gap-2">
+                    <i class="fas fa-envelope text-accent text-xs"></i> Contact
+                </a>
+
+                <!-- Mobile Dashboard placed after Contact -->
+                <div>
+                    <button class="block text-primary-text font-semibold text-base py-2 w-full text-start flex justify-between items-center" id="mobile-dashboard-toggle">
+                        <span class="flex items-center gap-2"><i class="fas fa-chart-line text-accent text-xs"></i> Dashboard</span>
+                        <svg class="w-4 h-4 transform transition-transform duration-200 text-primary-text" id="dashboard-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div id="mobile-dashboard-menu" class="hidden ps-4 flex flex-col space-y-2 mt-1 border-s-2 border-border py-1">
+                        <a href="admin-dashboard.html" class="block text-secondary-text hover:text-accent text-sm py-1">Admin Dashboard</a>
+                        <a href="user-dashboard.html" class="block text-secondary-text hover:text-accent text-sm py-1">User Dashboard</a>
+                    </div>
+                </div>
+
+
+            </nav>
+
+            <div class="mt-4 pt-3 border-t border-border flex flex-col gap-3 w-full">
+                <!-- Prominent Pill Login Portal Button -->
+                <a href="login.html" class="w-full btn-primary text-center py-3 rounded-full font-bold text-xs shadow-md flex items-center justify-center gap-2 transition hover:opacity-95">
+                    <i class="fas fa-right-to-bracket text-xs"></i> <span>Login Portal</span>
+                </a>
+                
+                <!-- Neat Layout: Two Icons (Theme & RTL) Down to Login Portal -->
+                <div class="grid grid-cols-2 gap-2.5 w-full">
+                    <button id="drawer-theme-toggle" class="flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-hover border border-border/80 text-xs font-medium text-primary-text hover:text-accent transition" title="Toggle Theme">
+                        <svg class="w-4 h-4 light-icon text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                        <svg class="w-4 h-4 dark-icon hidden text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+                        <span>Theme</span>
+                    </button>
+                    <button id="mobile-lang-icon-drawer" class="flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-hover border border-border/80 text-xs font-medium text-primary-text hover:text-accent transition" title="Toggle RTL/LTR">
+                        <svg class="w-4 h-4 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7.5 21 3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
+                        </svg>
+                        <span>RTL / LTR</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT CONTROLLERS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const html = document.documentElement;
+
+            // Sticky fixed navigation shadow & header scroll behavior
+            const headerWrapper = document.getElementById('top-header-wrapper');
+            
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 15) {
+                    headerWrapper?.classList.add('scrolled');
+                } else {
+                    headerWrapper?.classList.remove('scrolled');
+                }
+            });
+            const menuDrawer = document.getElementById('mobile-menu-drawer');
+            const menuContent = document.getElementById('drawer-content');
+            const menuBackdrop = document.getElementById('drawer-backdrop');
+
+            const openDrawer = () => {
+                if (menuDrawer) menuDrawer.classList.remove('pointer-events-none');
+                if (menuContent) menuContent.classList.remove('translate-y-[-100%]');
+                if (menuBackdrop) menuBackdrop.classList.add('opacity-50', 'pointer-events-auto');
+            };
+            const closeDrawer = () => {
+                if (menuContent) menuContent.classList.add('translate-y-[-100%]');
+                if (menuBackdrop) menuBackdrop.classList.remove('opacity-50', 'pointer-events-auto');
+                setTimeout(() => { 
+                    if (menuDrawer) menuDrawer.classList.add('pointer-events-none'); 
+                }, 200);
+            };
+
+            document.getElementById('mobile-menu-open')?.addEventListener('click', openDrawer);
+            document.getElementById('mobile-menu-close')?.addEventListener('click', closeDrawer);
+            menuBackdrop?.addEventListener('click', closeDrawer);
+
+            document.querySelectorAll('#drawer-content a').forEach(a => {
+                a.addEventListener('click', (e) => {
+                    const href = a.getAttribute('href');
+                    if (!href) return;
+
+                    const currentPath = window.location.pathname.split('/').pop() || 'index.html';
+
+                    // If clicking the link of the page currently being viewed
+                    if (href === currentPath || (currentPath === 'index.html' && (href === 'index.html' || href === './'))) {
+                        e.preventDefault();
+                        closeDrawer();
+                        return;
+                    }
+
+                    // If clicking an on-page section anchor (#...)
+                    if (href.startsWith('#')) {
+                        e.preventDefault();
+                        closeDrawer();
+                        const targetEl = document.querySelector(href);
+                        if (targetEl) {
+                            setTimeout(() => {
+                                targetEl.scrollIntoView({ behavior: 'smooth' });
+                            }, 150);
+                        }
+                        return;
+                    }
+
+                    // Normal page navigation proceeds directly without drawer scroll jumping
+                });
+            });
+
+            // Accordions for Mobile Menus
+            const setupAccordion = (toggleId, menuId, iconId) => {
+                const toggle = document.getElementById(toggleId);
+                toggle?.addEventListener('click', () => {
+                    const menu = document.getElementById(menuId);
+                    const icon = document.getElementById(iconId);
+                    menu?.classList.toggle('hidden');
+                    icon?.classList.toggle('rotate-180');
+                });
+            };
+            setupAccordion('mobile-homes-toggle', 'mobile-homes-menu', 'homes-icon');
+            setupAccordion('mobile-dashboard-toggle', 'mobile-dashboard-menu', 'dashboard-icon');
+
+            // Theme Switcher
+            const themeToggles = [
+                document.getElementById('theme-toggle'), 
+                document.getElementById('drawer-theme-toggle')
+            ];
+            
+            const applyTheme = (theme) => {
+                html.setAttribute('data-theme', theme);
+                html.classList.toggle('dark', theme === 'dark');
+                document.querySelectorAll('.light-icon').forEach(i => i.classList.toggle('hidden', theme === 'dark'));
+                document.querySelectorAll('.dark-icon').forEach(i => i.classList.toggle('hidden', theme === 'light'));
+            };
+            
+            themeToggles.forEach(btn => {
+                btn?.addEventListener('click', () => {
+                    const next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+                    localStorage.setItem('theme', next);
+                    applyTheme(next);
+                });
+            });
+            applyTheme(localStorage.getItem('theme') || 'light');
+
+            // Language RTL toggle
+            const langToggles = [document.getElementById('lang-icon'), document.getElementById('mobile-lang-icon-drawer')];
+            langToggles.forEach(btn => btn?.addEventListener('click', () => {
+                const current = localStorage.getItem('language') === 'ar' ? 'en' : 'ar';
+                localStorage.setItem('language', current);
+                html.setAttribute('dir', current === 'ar' ? 'rtl' : 'ltr');
+            }));
+            html.setAttribute('dir', localStorage.getItem('language') === 'ar' ? 'rtl' : 'ltr');
+
+            // Active Navigation Links Highlighting (Desktop & Mobile)
+            const setActiveNavLink = () => {
+                let currentPath = window.location.pathname.split('/').pop() || 'index.html';
+                if (!currentPath || currentPath === '' || currentPath === '/') {
+                    currentPath = 'index.html';
+                }
+
+                // 1. Desktop individual links
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    const href = link.getAttribute('href');
+                    if (href && href === currentPath) {
+                        link.classList.add('active');
+                    } else if (href) {
+                        link.classList.remove('active');
+                    }
+                });
+
+                // 2. Desktop Dropdowns Active State
+                const homeDropdownBtn = document.getElementById('home-dropdown-btn');
+                if (['index.html', 'home2.html'].includes(currentPath)) {
+                    homeDropdownBtn?.classList.add('active');
+                } else {
+                    homeDropdownBtn?.classList.remove('active');
+                }
+
+                const dashboardDropdownBtn = document.getElementById('dashboard-dropdown-btn');
+                if (['admin-dashboard.html', 'user-dashboard.html'].includes(currentPath)) {
+                    dashboardDropdownBtn?.classList.add('active');
+                } else {
+                    dashboardDropdownBtn?.classList.remove('active');
+                }
+
+                // Dropdown menu item active highlight
+                document.querySelectorAll('.dropdown-menu a').forEach(a => {
+                    if (a.getAttribute('href') === currentPath) {
+                        a.classList.add('text-accent', 'font-bold', 'bg-hover');
+                    } else {
+                        a.classList.remove('text-accent', 'font-bold', 'bg-hover');
+                    }
+                });
+
+                // 3. Mobile Navigation Links & Toggles Active State
+                const mobileHomesToggle = document.getElementById('mobile-homes-toggle');
+                const mobileDashboardToggle = document.getElementById('mobile-dashboard-toggle');
+
+                if (['index.html', 'home2.html'].includes(currentPath)) {
+                    mobileHomesToggle?.classList.add('text-accent');
+                    mobileHomesToggle?.querySelector('span')?.classList.add('font-bold');
+                    document.getElementById('mobile-homes-menu')?.classList.remove('hidden');
+                    document.getElementById('homes-icon')?.classList.add('rotate-180');
+                }
+
+                if (['admin-dashboard.html', 'user-dashboard.html'].includes(currentPath)) {
+                    mobileDashboardToggle?.classList.add('text-accent');
+                    mobileDashboardToggle?.querySelector('span')?.classList.add('font-bold');
+                    document.getElementById('mobile-dashboard-menu')?.classList.remove('hidden');
+                    document.getElementById('dashboard-icon')?.classList.add('rotate-180');
+                }
+
+                document.querySelectorAll('#drawer-content nav a').forEach(link => {
+                    const href = link.getAttribute('href');
+                    if (href === currentPath) {
+                        link.classList.add('text-accent', 'font-bold');
+                        link.classList.remove('text-secondary-text');
+                    }
+                });
+            };
+            setActiveNavLink();
+
+            // Desktop dropdown click support for touch devices
+            document.querySelectorAll('.dropdown-wrapper').forEach(wrapper => {
+                const btn = wrapper.querySelector('button');
+                const menu = wrapper.querySelector('.dropdown-menu');
+                if (btn && menu) {
+                    btn.addEventListener('click', (e) => {
+                        if (window.innerWidth >= 1280) {
+                            e.stopPropagation();
+                            const isVisible = menu.style.opacity === '1';
+                            document.querySelectorAll('.dropdown-menu').forEach(m => {
+                                m.style.opacity = '';
+                                m.style.visibility = '';
+                                m.style.transform = '';
+                            });
+                            if (!isVisible) {
+                                menu.style.opacity = '1';
+                                menu.style.visibility = 'visible';
+                                menu.style.transform = 'translateY(0)';
+                            }
+                        }
+                    });
+                }
+            });
+            document.addEventListener('click', () => {
+                document.querySelectorAll('.dropdown-menu').forEach(m => {
+                    m.style.opacity = '';
+                    m.style.visibility = '';
+                    m.style.transform = '';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

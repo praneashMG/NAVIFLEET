@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NaviFleet · Platform Admin Control</title>
+      <!-- Brand Favicons -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="apple-touch-icon" href="favicon.png">
+<!-- Fonts + Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            accent: 'var(--color-accent)',
+            'accent-light': 'var(--color-accent-light)',
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    /* --- Fleet Telematics & GPS Color Palette --- */
+    :root, html[data-theme='light'] {
+      --color-background: #F8FAFC;
+      --color-card-bg: #FFFFFF;
+      --color-primary-text: #0F172A;
+      --color-secondary-text: #475569;
+      --color-accent: #0284C7;
+      --color-accent-light: #06B6D4;
+      --color-border: #E2E8F0;
+      --color-hover: #F1F5F9;
+      --color-footer-bg: #0B132B;
+      --color-footer-text: #CBD5E1;
+      --color-success: #10B981;
+      --color-warning: #F59E0B;
+      --color-danger: #EF4444;
+      --color-info: #3B82F6;
+      --sidebar-bg: #FFFFFF;
+    }
+    html[data-theme='dark'] {
+      --color-background: #0B1120;
+      --color-card-bg: #111B30;
+      --color-primary-text: #F8FAFC;
+      --color-secondary-text: #94A3B8;
+      --color-accent: #38BDF8;
+      --color-accent-light: #22D3EE;
+      --color-border: #1E293B;
+      --color-hover: #16223B;
+      --color-footer-bg: #060913;
+      --color-footer-text: #94A3B8;
+      --color-success: #059669;
+      --color-warning: #D97706;
+      --color-danger: #DC2626;
+      --color-info: #2563EB;
+      --sidebar-bg: #0B1120;
+    }
+
+    body {
+      background-color: var(--color-background);
+      color: var(--color-primary-text);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      transition: background-color 0.3s, color 0.3s;
+      overflow-x: hidden;
+      width: 100%;
+    }
+    * { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .font-heading { font-family: 'Space Grotesk', sans-serif; }
+    h1, h2, h3, h4, h5, h6 { font-weight: 600 !important; }
+
+    .text-primary-text { color: var(--color-primary-text); }
+    .text-secondary-text { color: var(--color-secondary-text); }
+    .text-accent { color: var(--color-accent); }
+    .text-accent-light { color: var(--color-accent-light); }
+    .bg-background { background-color: var(--color-background); }
+    .bg-card { background-color: var(--color-card-bg); }
+    .bg-hover { background-color: var(--color-hover); }
+    .border-border { border-color: var(--color-border); }
+    .bg-sidebar { background-color: var(--sidebar-bg); }
+    .text-success { color: var(--color-success); }
+    .text-warning { color: var(--color-warning); }
+    .text-danger { color: var(--color-danger); }
+    .text-info { color: var(--color-info); }
+    .bg-success { background-color: var(--color-success); }
+    .bg-warning { background-color: var(--color-warning); }
+    .bg-danger { background-color: var(--color-danger); }
+    .bg-info { background-color: var(--color-info); }
+
+    .dashboard-card {
+      background-color: var(--color-card-bg);
+      border: 1px solid var(--color-border);
+      border-radius: 1.25rem;
+      transition: all 0.2s ease;
+      box-shadow: 0 8px 18px -8px rgba(0,0,0,0.04);
+      height: auto;
+    }
+    .dashboard-card:hover {
+      border-color: var(--color-accent);
+      box-shadow: 0 16px 24px -12px rgba(2,132,199,0.15);
+    }
+    .status-pulse {
+      width: 10px; height: 10px;
+      background-color: var(--color-success);
+      border-radius: 9999px;
+      box-shadow: 0 0 0 0 rgba(16,185,129,0.5);
+      animation: pulse2 2s infinite;
+    }
+    @keyframes pulse2 { 70% { box-shadow: 0 0 0 6px rgba(16,185,129,0); } }
+
+    .sidebar-link {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      border-radius: 1rem;
+      color: var(--color-secondary-text);
+      transition: all 0.18s ease;
+      font-weight: 500;
+      margin-bottom: 0.25rem;
+      white-space: nowrap;
+      cursor: pointer;
+      font-size: 0.88rem;
+    }
+    .sidebar-link:hover, .sidebar-link.active {
+      background: linear-gradient(135deg, #0284C7 0%, #06B6D4 100%);
+      color: #FFFFFF;
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
+    }
+    .sidebar-link:hover i, .sidebar-link.active i { color: white; }
+    .sidebar-link.logout:hover { background: #d13b3b; color: white; }
+
+    html[dir="rtl"] .sidebar-link { flex-direction: row-reverse; }
+    html[dir="rtl"] .ml-auto { margin-right: auto; margin-left: 0; }
+
+    .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.6s cubic-bezier(0.2,0.9,0.3,1), transform 0.6s cubic-bezier(0.2,0.9,0.3,1); }
+    .reveal.active { opacity: 1; transform: translateY(0); }
+    .admin-section { display: block; }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #0284C7 0%, #06B6D4 100%);
+      color: white;
+      border-radius: 9999px;
+      transition: all 0.25s ease;
+      cursor: pointer;
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
+    }
+    .btn-primary:hover {
+      opacity: 0.95;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 22px rgba(2, 132, 199, 0.4);
+    }
+    .btn-outline {
+      background: transparent;
+      color: var(--color-accent);
+      border: 1.5px solid var(--color-accent);
+      border-radius: 9999px;
+      transition: all 0.25s ease;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .btn-outline:hover {
+      background: var(--color-accent);
+      color: white;
+      box-shadow: 0 6px 18px rgba(2, 132, 199, 0.3);
+    }
+
+    .custom-scrollbar::-webkit-scrollbar { height: 4px; width: 4px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 10px; }
+
+    #mobile-overlay {
+      background-color: rgba(0,0,0,0.5);
+      backdrop-filter: blur(4px);
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s ease;
+      position: fixed; inset: 0; z-index: 55;
+    }
+    #mobile-overlay.active { opacity: 1; pointer-events: auto; }
+
+    .chart-bar {
+      height: 8px; border-radius: 4px;
+      background: linear-gradient(90deg, var(--color-accent), var(--color-accent-light));
+      transition: width 0.3s ease;
+    }
+    .progress-bar {
+      height: 8px;
+      border-radius: 4px;
+      background: linear-gradient(90deg, var(--color-accent), var(--color-accent-light));
+      transition: width 0.3s ease;
+    }
+    .status-badge {
+      padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.7rem;
+      font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;
+    }
+    .status-badge.active { background-color: var(--color-success); color: white; }
+    .status-badge.pending { background-color: var(--color-warning); color: white; }
+    .status-badge.cancelled { background-color: var(--color-danger); color: white; }
+    .status-badge.completed { background-color: var(--color-info); color: white; }
+    .status-badge.enroute { background-color: var(--color-accent); color: white; }
+  </style>
+</head>
+<body class="antialiased h-screen overflow-hidden w-full">
+
+  <!-- TOP BAR -->
+  <header class="border-b border-border bg-card sticky top-0 z-50 w-full">
+    <div class="max-w-[1920px] mx-auto px-2 sm:px-6 lg:px-10 py-3 flex items-center justify-between gap-1 sm:gap-3">
+      <!-- Hamburger + Brand -->
+      <div class="flex items-center gap-1 sm:gap-3">
+        <button id="mobile-menu-toggle" class="xl:hidden p-1.5 sm:p-2 -ml-1 sm:-ml-2 rounded-xl hover:bg-hover transition text-primary-text">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+        </button>
+        <div class="flex items-center gap-2 flex-shrink-0">
+          <a href="index.html" class="flex items-center gap-2 shrink-0 group">
+            <div class="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-xl bg-gradient-to-tr from-sky-600 to-cyan-500 text-white shadow-md shadow-sky-500/25 relative overflow-hidden group-hover:scale-105 transition-all duration-300">
+              <i class="fas fa-satellite text-base sm:text-lg group-hover:rotate-12 transition-transform duration-300"></i>
+              <span class="absolute -top-1 -right-1 flex h-2.5 w-2.5">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-300 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400 border border-white"></span>
+              </span>
+            </div>
+            <div class="leading-tight">
+              <span class="block text-lg sm:text-xl font-heading font-black tracking-tight">
+                <span class="text-primary-text">NAVI</span><span class="text-accent">FLEET</span>
+              </span>
+              <span class="block text-[9px] sm:text-[10px] font-semibold uppercase tracking-wider text-secondary-text">Platform Admin Control</span>
+            </div>
+          </a>
+        </div>
+      </div>
+      <!-- Admin Utilities -->
+      <div class="flex items-center gap-1 sm:gap-3 lg:gap-4 shrink-0 rtl:flex-row-reverse">
+        <div class="hidden lg:flex items-center bg-hover rounded-full px-3.5 py-1.5 border border-border w-44 xl:w-56 overflow-hidden">
+          <i class="fas fa-search text-secondary-text text-sm mr-2 shrink-0"></i>
+          <input type="text" placeholder="Search accounts..." class="bg-transparent border-none outline-none text-xs xl:text-sm w-full text-primary-text placeholder-secondary-text/50">
+        </div>
+        <button id="lang-toggle" class="p-1.5 sm:p-2 rounded-full hover:bg-hover transition text-primary-text" title="Switch Language"><i class="fas fa-exchange-alt"></i></button>
+        <button id="theme-toggle-user" class="p-1.5 sm:p-2 rounded-full hover:bg-hover transition text-primary-text" title="Toggle Theme"><i class="fas fa-moon"></i></button>
+        <div class="relative">
+          <button class="p-1.5 sm:p-2 rounded-full hover:bg-hover transition text-primary-text relative" title="Notifications">
+            <i class="fas fa-bell"></i>
+            <span class="absolute top-1 right-1 w-2 h-2 bg-danger rounded-full"></span>
+          </button>
+        </div>
+        <div class="relative flex items-center gap-1.5 sm:gap-2 pl-1.5 sm:pl-3 border-l border-border rtl:border-l-0 rtl:border-r min-w-0">
+          <div class="relative flex-shrink-0">
+            <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-accent/10 border border-accent flex items-center justify-center text-accent font-semibold">
+              <i class="fas fa-user-shield text-xs"></i>
+            </div>
+            <span class="absolute bottom-0 right-0 status-pulse"></span>
+          </div>
+          <div class="hidden md:block text-left text-xs sm:text-sm min-w-0">
+            <p class="font-semibold leading-none truncate">Jordan Blake</p>
+            <p class="text-[9px] sm:text-[10px] text-secondary-text mt-1 uppercase tracking-wider font-semibold whitespace-nowrap truncate">Admin · Platform Ops</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MOBILE OVERLAY -->
+  <div id="mobile-overlay" class="xl:hidden"></div>
+
+  <!-- MAIN LAYOUT -->
+  <main class="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-10 py-6 h-[calc(100vh-64px)] w-full relative">
+    <div class="flex flex-col xl:flex-row gap-4 xl:gap-6 xl:gap-10 h-full">
+
+      <!-- SIDEBAR -->
+      <aside id="sidebar-container" class="fixed xl:static top-0 left-0 rtl:right-0 rtl:left-auto h-full xl:h-auto w-72 xl:w-80 z-[60] xl:z-10 transform -translate-x-full rtl:translate-x-full xl:translate-x-0 xl:rtl:translate-x-0 transition-transform duration-300 ease-in-out bg-sidebar xl:bg-transparent flex-shrink-0">
+        <div class="dashboard-card p-5 bg-sidebar h-full overflow-y-auto custom-scrollbar border-r xl:border border-border xl:rounded-[1.25rem] rounded-none shadow-none xl:shadow-md">
+          <!-- Mobile header -->
+          <div class="flex xl:hidden justify-between items-center mb-6 px-2">
+            <div class="flex items-center gap-2 text-accent"><i class="fas fa-bars-staggered"></i><span class="text-xs font-medium uppercase tracking-widest">Menu</span></div>
+            <button id="close-sidebar" class="p-2 hover:bg-hover rounded-lg text-primary-text"><i class="fas fa-times"></i></button>
+          </div>
+          <!-- Mobile profile -->
+          <div class="flex xl:hidden items-center gap-3 mb-6 px-2 pb-6 border-b border-border">
+            <div class="relative flex-shrink-0">
+              <div class="w-10 h-10 rounded-full bg-accent/10 border border-accent flex items-center justify-center text-accent font-semibold"><i class="fas fa-user-shield text-sm"></i></div>
+              <span class="absolute bottom-0 right-0 status-pulse"></span>
+            </div>
+            <div><p class="font-semibold text-primary-text leading-tight">Jordan Blake</p><p class="text-[10px] text-secondary-text mt-0.5 uppercase tracking-widest font-medium">Platform Ops</p></div>
+          </div>
+
+          <nav class="flex flex-col gap-1">
+            <p class="text-[10px] uppercase tracking-widest text-secondary-text font-medium mt-2 mb-2 px-2">Platform</p>
+            <a href="#" onclick="activateSection('overview')" data-section="overview" class="sidebar-link active"><i class="fas fa-chart-pie w-5"></i><span>Overview & KPIs</span></a>
+            <a href="#" onclick="activateSection('accounts')" data-section="accounts" class="sidebar-link"><i class="fas fa-users w-5"></i><span>Client Accounts</span></a>
+            <a href="#" onclick="activateSection('subscriptions')" data-section="subscriptions" class="sidebar-link"><i class="fas fa-credit-card w-5"></i><span>Subscriptions & Billing</span></a>
+            <p class="text-[10px] uppercase tracking-widest text-secondary-text font-medium mt-4 mb-2 px-2">Telematics</p>
+            <a href="#" onclick="activateSection('devices')" data-section="devices" class="sidebar-link"><i class="fas fa-satellite-dish w-5"></i><span>Device Fleet</span></a>
+            <a href="#" onclick="activateSection('sim')" data-section="sim" class="sidebar-link"><i class="fas fa-sim-card w-5"></i><span>SIM & Connectivity</span></a>
+            <a href="#" onclick="activateSection('support')" data-section="support" class="sidebar-link"><i class="fas fa-headset w-5"></i><span>Support Tickets</span></a>
+            <p class="text-[10px] uppercase tracking-widest text-secondary-text font-medium mt-4 mb-2 px-2">System</p>
+            <a href="#" onclick="activateSection('team')" data-section="team" class="sidebar-link"><i class="fas fa-user-group w-5"></i><span>Internal Team</span></a>
+            <a href="#" onclick="activateSection('settings')" data-section="settings" class="sidebar-link"><i class="fas fa-sliders w-5"></i><span>Platform Settings</span></a>
+            <a href="#" onclick="activateSection('logout')" data-section="logout" class="sidebar-link logout mt-2 text-red-500"><i class="fas fa-power-off w-5"></i><span>Logout</span></a>
+          </nav>
+
+          <div class="mt-8 pt-4 border-t border-border text-[11px] text-secondary-text">
+            <div class="flex justify-between"><span>Active accounts</span><span class="font-semibold text-success">47</span></div>
+            <div class="flex justify-between mt-1.5"><span>Devices online</span><span class="font-medium text-accent">128</span></div>
+            <div class="flex justify-between mt-1.5"><span>Open tickets</span><span class="font-medium text-warning">6</span></div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- CONTENT AREA -->
+      <div class="flex-1 min-w-0 overflow-y-auto custom-scrollbar pr-2">
+
+        <!-- WELCOME MESSAGE BANNER -->
+        <div id="welcome-banner" class="dashboard-card p-4 sm:p-6 mb-6 border-l-4 border-l-sky-500 bg-card shadow-md relative overflow-hidden transition-all duration-300">
+          <!-- Dismiss button positioned absolute top-right for perfect touch/mobile alignment -->
+          <button onclick="dismissWelcomeBanner()" class="absolute top-3 right-3 sm:top-4 sm:right-4 text-secondary-text hover:text-primary-text p-1.5 sm:p-2 rounded-lg hover:bg-hover transition text-xs font-medium flex items-center gap-1 z-10" title="Dismiss">
+            <i class="fas fa-times text-sm"></i> <span class="hidden sm:inline">Dismiss</span>
+          </button>
+
+          <div class="flex items-start gap-3 sm:gap-4 pr-7 sm:pr-16">
+            <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-gradient-to-tr from-sky-600 to-cyan-500 text-white flex items-center justify-center shrink-0 shadow-md shadow-sky-500/20 text-lg sm:text-xl font-bold">
+              <i class="fas fa-satellite"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex flex-wrap items-center gap-2 mb-1">
+                <h1 class="text-base sm:text-xl font-heading font-bold text-primary-text flex items-center gap-1.5 leading-snug" id="admin-greeting-text">
+                  <span class="shrink-0">👋</span> <span class="break-words">Welcome back, Administrator Jordan!</span>
+                </h1>
+                <span class="px-2 py-0.5 rounded-full text-[10px] sm:text-xs font-semibold bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 inline-flex items-center gap-1 whitespace-nowrap">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping"></span> Live Admin Session
+                </span>
+              </div>
+              <p class="text-secondary-text text-xs sm:text-sm mt-1 leading-relaxed max-w-3xl">
+                Welcome to the <strong class="text-primary-text font-semibold">NaviFleet Central Telematics Command Console</strong>. All 128 IoT fleet tracking gateways and 47 client enterprise organizations are active and synchronized with 99.99% system availability.
+              </p>
+              <div class="flex items-center gap-x-4 gap-y-2 mt-3 flex-wrap text-[11px] sm:text-xs text-secondary-text">
+                <span class="inline-flex items-center gap-1.5"><i class="fas fa-shield-halved text-accent"></i> Role: <strong class="text-primary-text">Super Administrator</strong></span>
+                <span class="inline-flex items-center gap-1.5"><i class="fas fa-satellite-dish text-emerald-500"></i> Gateway: <strong class="text-emerald-500">100% Operational</strong></span>
+                <span class="inline-flex items-center gap-1.5"><i class="fas fa-clock text-accent-light"></i> Session: <strong class="text-primary-text" id="admin-session-time">Active now</strong></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- OVERVIEW / DASHBOARD -->
+        <div id="overview" class="admin-section">
+          <div class="dashboard-card p-5 sm:p-7 reveal active mb-6 bg-gradient-to-r from-sky-600 to-cyan-500 text-white">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+              <div>
+                <h2 class="text-xl sm:text-2xl lg:text-3xl font-heading font-bold mb-1.5 sm:mb-2">🛰️ Platform Overview, Jordan</h2>
+                <p class="text-white/90 text-xs sm:text-sm max-w-xl">Real-time account health, device fleet status, and platform-wide telemetry operations.</p>
+              </div>
+              <div class="flex flex-wrap items-center gap-2 sm:gap-3 shrink-0">
+                <span class="bg-white/20 backdrop-blur-sm px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-[11px] sm:text-xs font-semibold uppercase tracking-wider">Today · Apr 09, 2026</span>
+                <span class="bg-white/20 backdrop-blur-sm px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-[11px] sm:text-xs font-semibold uppercase tracking-wider flex items-center gap-1.5"><i class="fas fa-circle text-emerald-300 text-[6px]"></i> All Systems Go</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stats -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 mb-6">
+            <div class="dashboard-card p-6 reveal">
+              <div class="flex justify-between items-start gap-4">
+                <div><p class="text-secondary-text text-xs uppercase tracking-wider font-medium">Active Accounts</p><p class="text-3xl font-heading font-bold mt-2">47</p><p class="text-success text-xs font-medium mt-2 flex items-center gap-1"><i class="fas fa-arrow-up"></i> +3 this month</p></div>
+                <div class="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center shrink-0"><i class="fas fa-users text-accent text-xl"></i></div>
+              </div>
+              <div class="mt-4 pt-4 border-t border-border flex gap-4 text-xs"><span><span class="font-semibold">32</span> <span class="text-secondary-text">standard</span></span><span><span class="font-semibold">15</span> <span class="text-secondary-text">enterprise</span></span></div>
+            </div>
+            <div class="dashboard-card p-6 reveal">
+              <div class="flex justify-between items-start gap-4">
+                <div><p class="text-secondary-text text-xs uppercase tracking-wider font-medium">Devices Online</p><p class="text-3xl font-heading font-bold mt-2">128</p><p class="text-success text-xs font-medium mt-2 flex items-center gap-1"><i class="fas fa-check-circle"></i> 99.9% uptime</p></div>
+                <div class="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center shrink-0"><i class="fas fa-satellite-dish text-accent text-xl"></i></div>
+              </div>
+              <div class="mt-4 pt-4 border-t border-border flex gap-4 text-xs"><span><span class="font-semibold">126</span> <span class="text-secondary-text">online</span></span><span><span class="font-semibold">2</span> <span class="text-secondary-text">offline</span></span></div>
+            </div>
+            <div class="dashboard-card p-6 reveal">
+              <div class="flex justify-between items-start gap-4">
+                <div><p class="text-secondary-text text-xs uppercase tracking-wider font-medium">Open Support Tickets</p><p class="text-3xl font-heading font-bold mt-2">6</p><p class="text-warning text-xs font-medium mt-2 flex items-center gap-1"><i class="fas fa-clock"></i> 2 priority</p></div>
+                <div class="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center shrink-0"><i class="fas fa-headset text-accent text-xl"></i></div>
+              </div>
+              <div class="mt-4 pt-4 border-t border-border flex gap-4 text-xs"><span><span class="font-semibold">4</span> <span class="text-secondary-text">normal</span></span><span><span class="font-semibold">2</span> <span class="text-secondary-text">urgent</span></span></div>
+            </div>
+            <div class="dashboard-card p-6 reveal">
+              <div class="flex justify-between items-start gap-4">
+                <div><p class="text-secondary-text text-xs uppercase tracking-wider font-medium">Platform MRR</p><p class="text-3xl font-heading font-bold mt-2">$94.5k</p><p class="text-success text-xs font-medium mt-2 flex items-center gap-1"><i class="fas fa-arrow-up"></i> +8.2% vs last month</p></div>
+                <div class="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center shrink-0"><i class="fas fa-chart-line text-accent text-xl"></i></div>
+              </div>
+              <div class="mt-4 pt-4 border-t border-border flex gap-4 text-xs"><span><span class="font-semibold">$2.1k</span> <span class="text-secondary-text">avg/account</span></span><span><span class="font-semibold">97%</span> <span class="text-secondary-text">retention</span></span></div>
+            </div>
+          </div>
+
+          <!-- Telematics platform chart + quick action -->
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="dashboard-card p-6 lg:col-span-2 reveal">
+              <div class="flex justify-between items-center mb-6"><h3 class="font-heading font-bold text-lg">Platform Telemetry Throughput · Last 24h</h3><select class="bg-hover border border-border rounded-full px-4 py-2 text-xs font-medium uppercase"><option>All regions</option><option>North America</option><option>Europe</option><option>APAC</option></select></div>
+              <div class="h-64 flex items-end justify-between gap-2">
+                <div class="flex-1 flex flex-col items-center gap-2"><div class="w-full chart-bar" style="height: 40px; width: 60%;"></div><span class="text-xs text-secondary-text">00:00</span></div>
+                <div class="flex-1 flex flex-col items-center gap-2"><div class="w-full chart-bar" style="height: 65px; width: 80%;"></div><span class="text-xs text-secondary-text">04:00</span></div>
+                <div class="flex-1 flex flex-col items-center gap-2"><div class="w-full chart-bar" style="height: 90px; width: 95%;"></div><span class="text-xs text-secondary-text">08:00</span></div>
+                <div class="flex-1 flex flex-col items-center gap-2"><div class="w-full chart-bar" style="height: 75px; width: 85%;"></div><span class="text-xs text-secondary-text">12:00</span></div>
+                <div class="flex-1 flex flex-col items-center gap-2"><div class="w-full chart-bar" style="height: 55px; width: 70%;"></div><span class="text-xs text-secondary-text">16:00</span></div>
+                <div class="flex-1 flex flex-col items-center gap-2"><div class="w-full chart-bar" style="height: 30px; width: 50%;"></div><span class="text-xs text-secondary-text">20:00</span></div>
+                <div class="flex-1 flex flex-col items-center gap-2"><div class="w-full chart-bar" style="height: 20px; width: 40%;"></div><span class="text-xs text-secondary-text">24:00</span></div>
+              </div>
+              <div class="mt-6 pt-4 border-t border-border flex justify-between"><span class="text-secondary-text text-sm">Peak telemetry load</span><span class="font-semibold text-xl text-accent">08:00 – 12:00 UTC</span></div>
+            </div>
+            <div class="dashboard-card p-6 reveal">
+              <h3 class="font-heading font-bold text-lg mb-4">Quick Actions</h3>
+              <div class="space-y-3">
+                <button class="w-full py-3 btn-primary text-sm font-semibold"><i class="fas fa-user-plus mr-2"></i> Provision New Account</button>
+                <button class="w-full py-3 border border-border rounded-xl text-sm font-medium hover:bg-hover"><i class="fas fa-satellite-dish mr-2"></i> Register Device</button>
+                <button class="w-full py-3 border border-border rounded-xl text-sm font-medium hover:bg-hover"><i class="fas fa-headset mr-2"></i> View Ticket Queue</button>
+              </div>
+              <div class="mt-6 pt-4 border-t border-border text-xs text-secondary-text"><span class="block">💡 Tip: 2 devices offline — check SIM data plan status.</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CLIENT ACCOUNTS -->
+        <div id="accounts" class="admin-section hidden">
+          <div class="dashboard-card p-5 sm:p-7 reveal active">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+              <h2 class="text-xl sm:text-2xl font-heading font-bold text-primary-text flex items-center gap-2"><span class="text-accent">👥</span> Client Accounts</h2>
+              <div class="flex gap-3"><button class="px-6 py-3 btn-primary text-xs font-semibold uppercase tracking-widest"><i class="fas fa-filter mr-1"></i> Filter</button></div>
+            </div>
+            <div class="space-y-4">
+              <div class="flex items-center justify-between p-4 bg-hover rounded-2xl">
+                <div class="flex items-center gap-4"><div class="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center"><i class="fas fa-truck-fast text-accent text-xl"></i></div><div><p class="font-semibold">Pacific Freight Lines · Enterprise</p><p class="text-xs text-secondary-text mt-1">128 devices · MRR $4,200 · Region: US-West</p><div class="flex gap-3 mt-1 text-xs text-secondary-text"><span><i class="far fa-check-circle text-success"></i> Active</span><span><i class="fas fa-satellite-dish"></i> 126 online</span></div></div></div>
+                <div><span class="status-badge active">Active</span></div>
+              </div>
+              <div class="flex items-center justify-between p-4 bg-hover rounded-2xl">
+                <div class="flex items-center gap-4"><div class="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center"><i class="fas fa-box text-accent text-xl"></i></div><div><p class="font-semibold">Metro Courier Co · Professional</p><p class="text-xs text-secondary-text mt-1">42 devices · MRR $1,800 · Region: US-East</p><div class="flex gap-3 mt-1 text-xs text-secondary-text"><span><i class="far fa-check-circle text-success"></i> Active</span><span><i class="fas fa-satellite-dish"></i> 42 online</span></div></div></div>
+                <div><span class="status-badge active">Active</span></div>
+              </div>
+              <div class="flex items-center justify-between p-4 bg-hover rounded-2xl">
+                <div class="flex items-center gap-4"><div class="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center"><i class="fas fa-bus text-accent text-xl"></i></div><div><p class="font-semibold">City Transit Authority · Enterprise</p><p class="text-xs text-secondary-text mt-1">210 devices · MRR $6,500 · Region: EU-Central</p><div class="flex gap-3 mt-1 text-xs text-secondary-text"><span><i class="fas fa-triangle-exclamation text-warning"></i> 2 offline devices</span><span><i class="fas fa-satellite-dish"></i> 208 online</span></div></div></div>
+                <div><span class="status-badge pending">Attention</span></div>
+              </div>
+            </div>
+            <div class="mt-6 p-4 bg-hover rounded-2xl text-sm"><i class="fas fa-info-circle text-accent mr-2"></i> Account health is based on device uptime, billing status, and ticket volume.</div>
+          </div>
+        </div>
+
+        <!-- SUBSCRIPTIONS & BILLING -->
+        <div id="subscriptions" class="admin-section hidden">
+          <div class="dashboard-card p-5 sm:p-7 reveal active">
+            <h2 class="text-xl sm:text-2xl font-heading font-bold text-primary-text mb-8 flex items-center gap-2"><span class="text-accent">💳</span> Subscriptions & Billing</h2>
+            <div class="grid md:grid-cols-3 gap-6 mb-8">
+              <div class="p-6 bg-hover rounded-2xl"><h3 class="font-bold text-lg text-accent mb-2">Platform MRR</h3><p class="text-3xl font-heading font-bold">$94.5k</p><p class="text-xs text-success mt-1">+8.2% vs last month</p></div>
+              <div class="p-6 bg-hover rounded-2xl"><h3 class="font-bold text-lg text-accent mb-2">Outstanding</h3><p class="text-3xl font-heading font-bold">$12.2k</p><p class="text-xs text-warning mt-1">3 invoices overdue</p></div>
+              <div class="p-6 bg-hover rounded-2xl"><h3 class="font-bold text-lg text-accent mb-2">Collected (MTD)</h3><p class="text-3xl font-heading font-bold">$82.3k</p><p class="text-xs text-success mt-1">87% of target</p></div>
+            </div>
+            <div class="space-y-3">
+              <div class="flex items-center justify-between p-4 bg-hover rounded-2xl"><div><p class="font-semibold">Pacific Freight Lines</p><p class="text-xs text-secondary-text">Enterprise · $4,200/mo · 128 devices</p></div><span class="status-badge completed">Paid</span></div>
+              <div class="flex items-center justify-between p-4 bg-hover rounded-2xl"><div><p class="font-semibold">Metro Courier Co</p><p class="text-xs text-secondary-text">Professional · $1,800/mo · 42 devices</p></div><span class="status-badge completed">Paid</span></div>
+              <div class="flex items-center justify-between p-4 bg-hover rounded-2xl"><div><p class="font-semibold">City Transit Authority</p><p class="text-xs text-secondary-text">Enterprise · $6,500/mo · 210 devices</p></div><span class="status-badge pending">Overdue</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- DEVICE FLEET -->
+        <div id="devices" class="admin-section hidden">
+          <div class="dashboard-card p-5 sm:p-7 reveal active">
+            <h2 class="text-xl sm:text-2xl font-heading font-bold text-primary-text mb-8 flex items-center gap-2"><span class="text-accent">📡</span> Device Fleet</h2>
+            <div class="grid md:grid-cols-3 gap-6 mb-8">
+              <div class="p-6 bg-hover rounded-2xl"><h3 class="font-bold text-lg text-accent mb-2">Total Devices</h3><p class="text-3xl font-heading font-bold">380</p><p class="text-xs text-secondary-text mt-1">deployed across 47 accounts</p></div>
+              <div class="p-6 bg-hover rounded-2xl"><h3 class="font-bold text-lg text-accent mb-2">Online</h3><p class="text-3xl font-heading font-bold">376</p><p class="text-xs text-success mt-1">98.9% uptime</p></div>
+              <div class="p-6 bg-hover rounded-2xl"><h3 class="font-bold text-lg text-accent mb-2">Offline</h3><p class="text-3xl font-heading font-bold">4</p><p class="text-xs text-warning mt-1">requires attention</p></div>
+            </div>
+            <div class="space-y-3">
+              <div class="flex items-center justify-between p-4 bg-hover rounded-2xl"><div><p class="font-semibold">OBD-II Gateway · Batch #2026-X4</p><p class="text-xs text-secondary-text">Firmware v4.2.1 · deployed to 280 units</p></div><span class="status-badge active">Online</span></div>
+              <div class="flex items-center justify-between p-4 bg-hover rounded-2xl"><div><p class="font-semibold">J1939 Heavy-Duty Gateway · Batch #2026-Y1</p><p class="text-xs text-secondary-text">Firmware v3.8.0 · deployed to 80 units</p></div><span class="status-badge active">Online</span></div>
+              <div class="flex items-center justify-between p-4 bg-hover rounded-2xl"><div><p class="font-semibold">BLE Cargo Sensor · Batch #2026-Z2</p><p class="text-xs text-secondary-text">Firmware v2.1.4 · 4 units offline</p></div><span class="status-badge pending">Partial</span></div>
+            </div>
+            <div class="mt-6 p-4 bg-hover rounded-2xl text-sm"><i class="fas fa-info-circle text-accent mr-2"></i> Firmware updates can be pushed remotely via OTA. Devices must be online to receive them.</div>
+          </div>
+        </div>
+
+        <!-- SIM & CONNECTIVITY -->
+        <div id="sim" class="admin-section hidden">
+          <div class="dashboard-card p-5 sm:p-7 reveal active">
+            <h2 class="text-xl sm:text-2xl font-heading font-bold text-primary-text mb-8 flex items-center gap-2"><span class="text-accent">📶</span> SIM & Connectivity</h2>
+            <div class="space-y-4">
+              <div class="flex items-center justify-between p-4 bg-hover rounded-2xl"><div><p class="font-semibold">Fleet Data Pool · North America</p><p class="text-xs text-secondary-text">240 GB / 500 GB used · 48% remaining</p></div><span class="status-badge active">Healthy</span></div>
+              <div class="flex items-center justify-between p-4 bg-hover rounded-2xl"><div><p class="font-semibold">Fleet Data Pool · Europe</p><p class="text-xs text-secondary-text">85 GB / 250 GB used · 66% remaining</p></div><span class="status-badge active">Healthy</span></div>
+              <div class="flex items-center justify-between p-4 bg-hover rounded-2xl"><div><p class="font-semibold">APAC Data Pool</p><p class="text-xs text-secondary-text">45 GB / 100 GB used · 55% remaining</p></div><span class="status-badge completed">Normal</span></div>
+              <div class="flex items-center justify-between p-4 bg-hover rounded-2xl"><div><p class="font-semibold">4G/LTE Carrier Agreements</p><p class="text-xs text-secondary-text">3 active carriers · fallback enabled</p></div><span class="status-badge active">Connected</span></div>
+            </div>
+            <div class="mt-6 p-4 bg-hover rounded-2xl text-sm"><i class="fas fa-info-circle text-accent mr-2"></i> SIM data plans can be adjusted per account. Overage alerts trigger at 90% usage.</div>
+          </div>
+        </div>
+
+        <!-- SUPPORT TICKETS -->
+        <div id="support" class="admin-section hidden">
+          <div class="dashboard-card p-5 sm:p-7 reveal active">
+            <h2 class="text-xl sm:text-2xl font-heading font-bold text-primary-text mb-8 flex items-center gap-2"><span class="text-accent">🎫</span> Support Tickets</h2>
+            <div class="space-y-4">
+              <div class="flex items-center justify-between p-4 bg-hover rounded-2xl">
+                <div><p class="font-semibold">City Transit Authority · Device Offline (2 units)</p><p class="text-xs text-secondary-text">Priority: High · Opened 2h ago</p></div>
+                <div class="flex gap-2"><span class="status-badge cancelled">Urgent</span><button class="text-accent"><i class="fas fa-eye"></i></button></div>
+              </div>
+              <div class="flex items-center justify-between p-4 bg-hover rounded-2xl">
+                <div><p class="font-semibold">Metro Courier Co · SIM Data Plan Upgrade</p><p class="text-xs text-secondary-text">Priority: Normal · Opened 5h ago</p></div>
+                <div class="flex gap-2"><span class="status-badge pending">Normal</span><button class="text-accent"><i class="fas fa-eye"></i></button></div>
+              </div>
+              <div class="flex items-center justify-between p-4 bg-hover rounded-2xl">
+                <div><p class="font-semibold">Pacific Freight Lines · Firmware Update Request</p><p class="text-xs text-secondary-text">Priority: Normal · Opened 1 day ago</p></div>
+                <div class="flex gap-2"><span class="status-badge pending">Normal</span><button class="text-accent"><i class="fas fa-eye"></i></button></div>
+              </div>
+            </div>
+            <div class="mt-6 p-4 bg-hover rounded-2xl text-sm"><i class="fas fa-info-circle text-accent mr-2"></i> Urgent tickets auto-escalate to on-call engineers via SMS after 15 minutes.</div>
+          </div>
+        </div>
+
+        <!-- INTERNAL TEAM -->
+        <div id="team" class="admin-section hidden">
+          <div class="dashboard-card p-5 sm:p-7 reveal active">
+            <h2 class="text-xl sm:text-2xl font-heading font-bold text-primary-text mb-8 flex items-center gap-2"><span class="text-accent">👨‍💼</span> Internal Team</h2>
+            <div class="space-y-3">
+              <div class="flex items-center justify-between p-4 bg-hover rounded-2xl"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center text-accent"><i class="fas fa-user-shield"></i></div><div><p class="font-semibold">Jordan Blake</p><p class="text-xs text-secondary-text">Platform Ops · Admin</p></div></div><span class="status-badge active">Online</span></div>
+              <div class="flex items-center justify-between p-4 bg-hover rounded-2xl"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center text-accent"><i class="fas fa-user-gear"></i></div><div><p class="font-semibold">Priya Nair</p><p class="text-xs text-secondary-text">Telematics Engineer</p></div></div><span class="status-badge active">Online</span></div>
+              <div class="flex items-center justify-between p-4 bg-hover rounded-2xl"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center text-accent"><i class="fas fa-user-headset"></i></div><div><p class="font-semibold">Marcus Vance</p><p class="text-xs text-secondary-text">Support Lead</p></div></div><span class="status-badge pending">In call</span></div>
+              <div class="flex items-center justify-between p-4 bg-hover rounded-2xl"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center text-accent"><i class="fas fa-user-tie"></i></div><div><p class="font-semibold">Elena Rostova</p><p class="text-xs text-secondary-text">Account Manager</p></div></div><span class="status-badge active">Online</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PLATFORM SETTINGS -->
+        <div id="settings" class="admin-section hidden">
+          <div class="dashboard-card p-5 sm:p-7 reveal active">
+            <h2 class="text-xl sm:text-2xl font-heading font-bold text-primary-text mb-8 flex items-center gap-2"><span class="text-accent">⚙️</span> Platform Settings</h2>
+            <div class="space-y-6">
+              <div>
+                <h3 class="font-semibold text-lg mb-4 pb-2 border-b border-border">Telemetry & Device Configuration</h3>
+                <div class="space-y-3">
+                  <div class="flex items-center justify-between p-4 bg-hover rounded-xl"><div><p class="font-semibold">Auto-provision new devices</p><p class="text-xs text-secondary-text">Assign SIM and firmware on first boot</p></div><div class="w-12 h-6 bg-accent rounded-full p-1 cursor-pointer"><span class="block w-4 h-4 bg-white rounded-full ml-auto"></span></div></div>
+                  <div class="flex items-center justify-between p-4 bg-hover rounded-xl"><div><p class="font-semibold">OTA firmware updates</p><p class="text-xs text-secondary-text">Push firmware to online devices in batches</p></div><div class="w-12 h-6 bg-accent rounded-full p-1 cursor-pointer"><span class="block w-4 h-4 bg-white rounded-full ml-auto"></span></div></div>
+                  <div class="flex items-center justify-between p-4 bg-hover rounded-xl"><div><p class="font-semibold">Device offline alerts</p><p class="text-xs text-secondary-text">Notify account manager after 5 min offline</p></div><div class="w-12 h-6 bg-accent rounded-full p-1 cursor-pointer"><span class="block w-4 h-4 bg-white rounded-full ml-auto"></span></div></div>
+                </div>
+              </div>
+              <div>
+                <h3 class="font-semibold text-lg mb-4 pb-2 border-b border-border">Billing & Account Management</h3>
+                <div class="space-y-3">
+                  <div class="flex items-center justify-between p-4 bg-hover rounded-xl"><div><p class="font-semibold">Auto-invoice on renewal date</p><p class="text-xs text-secondary-text">Generate invoices 7 days before renewal</p></div><div class="w-12 h-6 bg-accent rounded-full p-1 cursor-pointer"><span class="block w-4 h-4 bg-white rounded-full ml-auto"></span></div></div>
+                  <div class="flex items-center justify-between p-4 bg-hover rounded-xl"><div><p class="font-semibold">Grace period for overdue accounts</p><p class="text-xs text-secondary-text">Suspend telematics after</p></div><select class="bg-card border border-border rounded-lg px-3 py-1.5 text-xs"><option>3 days</option><option selected>7 days</option><option>14 days</option></select></div>
+                </div>
+              </div>
+              <div class="pt-4 flex gap-4"><button class="btn-primary px-8 py-3 text-xs font-semibold uppercase tracking-widest">Save Changes</button><button class="border border-border px-8 py-3 rounded-full text-xs font-semibold uppercase tracking-widest hover:bg-hover">Cancel</button></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- LOGOUT -->
+        <div id="logout" class="admin-section hidden">
+          <div class="dashboard-card p-10 reveal active text-center max-w-lg mx-auto border-red-500/20">
+            <div class="w-20 h-20 mx-auto bg-red-100 dark:bg-red-900/20 rounded-full flex items-center justify-center text-red-500 text-3xl mb-6"><i class="fas fa-door-open"></i></div>
+            <h2 class="text-2xl font-heading font-bold text-primary-text">Logout?</h2>
+            <p class="text-secondary-text mt-3 text-sm">You will be redirected to the platform admin login page.</p>
+            <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+              <a href="login.html"><button class="bg-red-500 hover:bg-red-600 text-white font-semibold uppercase tracking-widest px-8 py-3 rounded-full text-[10px] transition shadow-lg">Logout</button></a>
+              <button onclick="activateSection('overview')" class="bg-hover border border-border px-8 py-3 rounded-full text-[10px] font-semibold uppercase tracking-widest transition">Cancel</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- SYSTEM STATUS / FOOTER -->
+        <div class="bg-gradient-to-r from-sky-600 to-cyan-500 rounded-3xl p-6 sm:p-8 mt-10 text-white reveal flex flex-col sm:flex-row items-center justify-between gap-6 shadow-xl">
+          <div class="flex items-center gap-4 text-center sm:text-left"><span class="w-3 h-3 bg-white rounded-full animate-ping flex-shrink-0"></span><div><p class="font-heading font-bold text-lg tracking-tighter uppercase">NaviFleet Platform Online</p><p class="text-xs text-white/70 italic">Secure telematics operations · real-time device health</p></div></div>
+          <div class="flex items-center gap-3"><span class="bg-white/20 backdrop-blur-md px-6 py-2.5 rounded-full text-[10px] font-semibold uppercase tracking-widest">47 accounts · 380 devices</span></div>
+        </div>
+        <footer class="mt-12 text-center text-[10px] text-secondary-text border-t border-border pt-8 pb-12 w-full">
+          <p class="uppercase tracking-[0.3em] font-semibold opacity-40">© 2026 NaviFleet Technologies Inc. · Fleet Telematics & GPS Tracking Software</p>
+          <div class="flex justify-center gap-8 mt-4 font-semibold uppercase opacity-60"><span class="hover:text-accent cursor-pointer transition">Privacy Policy</span><span class="hover:text-accent cursor-pointer transition">Terms of Service</span><span class="hover:text-accent cursor-pointer transition">API Documentation</span></div>
+        </footer>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    (function() {
+      'use strict';
+      const htmlEl = document.documentElement;
+
+      // ----- 1. MOBILE MENU -----
+      const menuToggle = document.getElementById('mobile-menu-toggle');
+      const closeSidebar = document.getElementById('close-sidebar');
+      const sidebar = document.getElementById('sidebar-container');
+      const overlay = document.getElementById('mobile-overlay');
+      function toggleMobileMenu(isOpen) {
+        if (isOpen) { sidebar.classList.remove('-translate-x-full'); overlay.classList.add('active'); document.body.classList.toggle('overflow-hidden', isOpen); }
+        else { sidebar.classList.add('-translate-x-full'); overlay.classList.remove('active'); document.body.style.overflow = ''; }
+      }
+      if (menuToggle) menuToggle.addEventListener('click', () => toggleMobileMenu(true));
+      if (closeSidebar) closeSidebar.addEventListener('click', () => toggleMobileMenu(false));
+      if (overlay) overlay.addEventListener('click', () => toggleMobileMenu(false));
+
+      // ----- 2. THEME -----
+      const themeBtn = document.getElementById('theme-toggle-user');
+      function setTheme(theme) {
+        htmlEl.setAttribute('data-theme', theme);
+        htmlEl.classList.toggle('dark', theme === 'dark');
+        localStorage.setItem('NaviFleet_theme', theme);
+        if (themeBtn) themeBtn.innerHTML = theme === 'dark' ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+      }
+      const savedTheme = localStorage.getItem('NaviFleet_theme') || 'light';
+      setTheme(savedTheme);
+      if (themeBtn) themeBtn.addEventListener('click', () => { const current = htmlEl.getAttribute('data-theme'); setTheme(current === 'light' ? 'dark' : 'light'); });
+
+      // ----- 3. RTL -----
+      const langBtn = document.getElementById('lang-toggle');
+      function setDirection(dir) { htmlEl.setAttribute('dir', dir); localStorage.setItem('NaviFleet_lang', dir === 'rtl' ? 'ar' : 'en'); }
+      const savedLang = localStorage.getItem('NaviFleet_lang') || 'en';
+      setDirection(savedLang === 'ar' ? 'rtl' : 'ltr');
+      if (langBtn) langBtn.addEventListener('click', () => { const currentDir = htmlEl.getAttribute('dir') || 'ltr'; setDirection(currentDir === 'ltr' ? 'rtl' : 'ltr'); });
+
+      // ----- 4. REVEAL -----
+      function checkReveal() { document.querySelectorAll('.reveal').forEach(el => { if (el.getBoundingClientRect().top < window.innerHeight - 50) el.classList.add('active'); }); }
+      window.addEventListener('scroll', checkReveal);
+      window.addEventListener('load', checkReveal);
+
+      // ----- 5. NAVIGATION -----
+      const sections = ['overview','accounts','subscriptions','devices','sim','support','team','settings','logout'];
+      const sidebarLinks = document.querySelectorAll('.sidebar-link');
+      window.activateSection = function(sectionId) {
+        sections.forEach(id => { const el = document.getElementById(id); if (el) el.classList.add('hidden'); });
+        const activeEl = document.getElementById(sectionId);
+        if (activeEl) { activeEl.classList.remove('hidden'); activeEl.classList.add('active'); }
+        sidebarLinks.forEach(link => { link.classList.remove('active'); if (link.dataset.section === sectionId) link.classList.add('active'); });
+        if (window.innerWidth < 1024) { toggleMobileMenu(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+      };
+      sidebarLinks.forEach(link => { link.addEventListener('click', function(e) { e.preventDefault(); const section = this.dataset.section; if (section) activateSection(section); }); });
+      // ----- 6. WELCOME MESSAGE & TIME GREETING -----
+      const greetingEl = document.getElementById('admin-greeting-text');
+      const sessionTimeEl = document.getElementById('admin-session-time');
+      const hour = new Date().getHours();
+      let timeGreeting = 'Good morning';
+      if (hour >= 12 && hour < 17) timeGreeting = 'Good afternoon';
+      else if (hour >= 17) timeGreeting = 'Good evening';
+      
+      if (greetingEl) {
+        greetingEl.innerHTML = `<span>👋</span> ${timeGreeting}, Administrator Jordan!`;
+      }
+      if (sessionTimeEl) {
+        sessionTimeEl.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      }
+
+      window.dismissWelcomeBanner = function() {
+        const banner = document.getElementById('welcome-banner');
+        if (banner) {
+          banner.style.transition = 'all 0.35s ease';
+          banner.style.opacity = '0';
+          banner.style.transform = 'translateY(-12px)';
+          setTimeout(() => banner.remove(), 350);
+        }
+      };
+
+      // Toast Welcome Alert
+      const toast = document.createElement('div');
+      toast.className = 'fixed bottom-6 right-6 z-50 bg-slate-900/90 text-white px-5 py-3 rounded-2xl shadow-2xl border border-sky-500/30 backdrop-blur-md flex items-center gap-3 text-sm transition-all duration-300 transform translate-y-10 opacity-0';
+      toast.innerHTML = '<div class="w-8 h-8 rounded-xl bg-sky-500/20 text-sky-400 flex items-center justify-center shrink-0"><i class="fas fa-satellite text-xs"></i></div><div><p class="font-semibold text-xs text-white">Welcome back, Jordan!</p><p class="text-[11px] text-slate-300">Admin Telematics Console is synced.</p></div>';
+      document.body.appendChild(toast);
+      setTimeout(() => {
+        toast.classList.remove('translate-y-10', 'opacity-0');
+        setTimeout(() => {
+          toast.classList.add('translate-y-10', 'opacity-0');
+          setTimeout(() => toast.remove(), 400);
+        }, 4000);
+      }, 600);
+
+      activateSection('overview');
+    })();
+  </script>
+</body>
+</html>

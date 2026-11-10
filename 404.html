@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 — Page Not Found | NaviFleet</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <script src="tailwind.js"></script>
+    <style>
+        /* --- Theme Colors (same as rest of site) --- */
+        :root, html[data-theme='light'] {
+            --color-background: #F8FAFC;
+            --color-card-bg: #FFFFFF;
+            --color-primary-text: #0F172A;
+            --color-secondary-text: #475569;
+            --color-accent: #0284C7;
+            --color-accent-light: #06B6D4;
+            --color-border: #E2E8F0;
+            --color-hover: #F1F5F9;
+        }
+        html[data-theme='dark'] {
+            --color-background: #0B1120;
+            --color-card-bg: #111B30;
+            --color-primary-text: #F8FAFC;
+            --color-secondary-text: #94A3B8;
+            --color-accent: #38BDF8;
+            --color-accent-light: #22D3EE;
+            --color-border: #1E293B;
+            --color-hover: #16223B;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            background-color: var(--color-background);
+            color: var(--color-primary-text);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+            overflow-x: hidden;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .font-heading { font-family: 'Space Grotesk', sans-serif; }
+
+        .text-primary-text { color: var(--color-primary-text); }
+        .text-secondary-text { color: var(--color-secondary-text); }
+        .text-accent { color: var(--color-accent); }
+        .text-accent-light { color: var(--color-accent-light); }
+        .bg-background { background-color: var(--color-background); }
+        .bg-card { background-color: var(--color-card-bg); }
+        .bg-hover { background-color: var(--color-hover); }
+        .border-border { border-color: var(--color-border); }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #0284c7 0%, #06b6d4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        html[data-theme='dark'] .text-gradient {
+            background: linear-gradient(135deg, #38bdf8 0%, #22d3ee 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Buttons */
+        .btn-primary {
+            background: linear-gradient(135deg, #0284C7 0%, #06B6D4 100%);
+            color: white;
+            transition: all 0.25s ease;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .btn-primary:hover {
+            opacity: 0.95;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 22px rgba(2, 132, 199, 0.4);
+        }
+        .btn-outline {
+            background: transparent;
+            color: var(--color-accent);
+            border: 1.5px solid var(--color-accent);
+            transition: all 0.25s ease;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .btn-outline:hover {
+            background: var(--color-accent);
+            color: white;
+            box-shadow: 0 6px 18px rgba(2, 132, 199, 0.3);
+        }
+
+        /* Icon buttons */
+        .icon-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 42px;
+            height: 42px;
+            border-radius: 9999px;
+            border: 1px solid var(--color-border);
+            background-color: var(--color-hover);
+            color: var(--color-primary-text);
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        .icon-btn:hover {
+            color: var(--color-accent);
+            border-color: var(--color-accent);
+        }
+
+        /* 404 number glow */
+        .error-code {
+            font-size: clamp(6rem, 22vw, 16rem);
+            line-height: 1;
+            letter-spacing: -0.04em;
+            background: linear-gradient(135deg, #0284c7 0%, #06b6d4 60%, #38bdf8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 10px 30px rgba(2, 132, 199, 0.25));
+        }
+        html[data-theme='dark'] .error-code {
+            background: linear-gradient(135deg, #38bdf8 0%, #22d3ee 60%, #7dd3fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 10px 40px rgba(56, 189, 248, 0.35));
+        }
+
+        /* Decorative dot grid */
+        .dot-grid {
+            background-image: radial-gradient(var(--color-accent) 1px, transparent 1px);
+            background-size: 28px 28px;
+            opacity: 0.08;
+        }
+        html[data-theme='dark'] .dot-grid { opacity: 0.12; }
+
+        /* Floating animation for icon */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+        .float-icon { animation: float 4s ease-in-out infinite; }
+
+        /* Fade-in animation */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-up { animation: fadeUp 0.7s ease-out both; }
+        .fade-up-delay-1 { animation: fadeUp 0.7s ease-out 0.1s both; }
+        .fade-up-delay-2 { animation: fadeUp 0.7s ease-out 0.2s both; }
+        .fade-up-delay-3 { animation: fadeUp 0.7s ease-out 0.3s both; }
+
+        /* RTL helpers */
+        html[dir='rtl'] .rtl-flip { transform: scaleX(-1); }
+
+        /* Reduce motion preference */
+        @media (prefers-reduced-motion: reduce) {
+            .float-icon, .fade-up, .fade-up-delay-1, .fade-up-delay-2, .fade-up-delay-3 {
+                animation: none !important;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Decorative background layers -->
+    <div class="fixed inset-0 -z-10 dot-grid pointer-events-none"></div>
+    <div class="fixed -top-40 -right-40 w-96 h-96 rounded-full bg-sky-500/10 blur-3xl pointer-events-none -z-10"></div>
+    <div class="fixed -bottom-40 -left-40 w-96 h-96 rounded-full bg-cyan-500/10 blur-3xl pointer-events-none -z-10"></div>
+
+    <!-- TOP BAR: Logo + Theme/RTL toggles only -->
+    <header class="w-full">
+        <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+
+            <!-- Logo -->
+            <a href="index.html" class="flex items-center gap-3 group" aria-label="NaviFleet Home">
+                <div class="w-11 h-11 flex items-center justify-center rounded-xl bg-gradient-to-tr from-sky-600 to-cyan-500 text-white shadow-md shadow-sky-500/25 relative overflow-hidden group-hover:scale-105 transition-all duration-300">
+                    <i class="fas fa-satellite text-lg group-hover:rotate-12 transition-transform duration-300"></i>
+                    <span class="absolute -top-1 -right-1 flex h-3 w-3">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-300 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-400 border-2 border-white"></span>
+                    </span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-2xl font-heading font-black tracking-tight flex items-center gap-1">
+                        <span class="text-primary-text">NAVI</span><span class="text-accent">FLEET</span>
+                    </span>
+                    <span class="text-[10px] tracking-wider uppercase font-semibold text-secondary-text -mt-1">Telematics & GPS Tracking</span>
+                </div>
+            </a>
+
+            <!-- Controls: Theme toggle + RTL toggle -->
+            <div class="flex items-center gap-2 sm:gap-3">
+                <button id="theme-toggle" class="icon-btn" title="Toggle Dark/Light Mode" aria-label="Toggle Dark/Light Mode">
+                    <svg class="w-5 h-5 light-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                    </svg>
+                    <svg class="w-5 h-5 dark-icon hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                    </svg>
+                </button>
+                <button id="lang-toggle" class="icon-btn" title="Toggle RTL/LTR" aria-label="Toggle RTL/LTR">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7.5 21 3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
+                    </svg>
+                </button>
+            </div>
+
+        </div>
+    </header>
+
+    <!-- MAIN 404 CONTENT -->
+    <main class="flex-grow flex items-center justify-center px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
+        <div class="w-full max-w-4xl text-center">
+
+            <!-- Floating icon -->
+            <div class="fade-up inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-tr from-sky-600 to-cyan-500 text-white shadow-xl shadow-sky-500/30 mb-8 float-icon">
+                <i class="fas fa-satellite-dish text-3xl"></i>
+            </div>
+
+            <!-- 404 number -->
+            <div class="fade-up-delay-1">
+                <h1 class="error-code font-heading font-black">404</h1>
+            </div>
+
+            <!-- Heading -->
+            <h2 class="fade-up-delay-1 font-heading text-2xl sm:text-3xl lg:text-4xl font-bold text-primary-text mt-2 mb-4">
+                Lost in Transit
+            </h2>
+
+            <!-- Description -->
+            <p class="fade-up-delay-2 text-base sm:text-lg text-secondary-text max-w-xl mx-auto leading-relaxed mb-8">
+                Looks like this page has gone off the grid. Our GPS can't locate it — but don't worry, your fleet data is safe. Let's get you back on the road.
+            </p>
+
+            <!-- CTA Buttons -->
+            <div class="fade-up-delay-3 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-12">
+                <a href="index.html" class="btn-primary px-8 py-3.5 rounded-full text-base font-semibold flex items-center justify-center gap-2">
+                    <i class="fas fa-house"></i> Back to Home
+                </a>
+                <a href="contact.html" class="btn-outline px-7 py-3.5 rounded-full text-base font-semibold flex items-center justify-center gap-2">
+                    <i class="fas fa-headset"></i> Contact Support
+                </a>
+            </div>
+
+            <!-- Quick links -->
+            <div class="fade-up-delay-3 pt-8 border-t border-border">
+                <p class="text-xs uppercase tracking-wider font-semibold text-secondary-text mb-5">Or explore these pages</p>
+                <div class="flex flex-wrap justify-center gap-3">
+                    <a href="features.html" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-card border border-border text-sm font-medium text-primary-text hover:border-accent/50 hover:text-accent transition-all">
+                        <i class="fas fa-layer-group text-accent text-xs"></i> Features
+                    </a>
+                    <a href="industries.html" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-card border border-border text-sm font-medium text-primary-text hover:border-accent/50 hover:text-accent transition-all">
+                        <i class="fas fa-city text-accent text-xs"></i> Industries
+                    </a>
+                    <a href="pricing.html" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-card border border-border text-sm font-medium text-primary-text hover:border-accent/50 hover:text-accent transition-all">
+                        <i class="fas fa-tags text-accent text-xs"></i> Pricing
+                    </a>
+                    <a href="about.html" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-card border border-border text-sm font-medium text-primary-text hover:border-accent/50 hover:text-accent transition-all">
+                        <i class="fas fa-circle-info text-accent text-xs"></i> About
+                    </a>
+                    <a href="login.html" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-card border border-border text-sm font-medium text-primary-text hover:border-accent/50 hover:text-accent transition-all">
+                        <i class="fas fa-right-to-bracket text-accent text-xs"></i> Login
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- FOOTER (minimal) -->
+    <footer class="border-t border-border py-6">
+        <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-secondary-text">
+            <div>© 2026 NaviFleet Technologies Inc. All rights reserved.</div>
+            <div class="flex gap-4">
+                <a href="#" class="hover:text-accent transition">Privacy</a>
+                <a href="#" class="hover:text-accent transition">Terms</a>
+                <a href="contact.html" class="hover:text-accent transition">Support</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SCRIPT: Theme + RTL toggles -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const html = document.documentElement;
+
+            // --- Theme toggle ---
+            const themeToggle = document.getElementById('theme-toggle');
+            const applyTheme = (theme) => {
+                html.setAttribute('data-theme', theme);
+                document.querySelectorAll('.light-icon').forEach(i => i.classList.toggle('hidden', theme === 'dark'));
+                document.querySelectorAll('.dark-icon').forEach(i => i.classList.toggle('hidden', theme === 'light'));
+            };
+
+            themeToggle?.addEventListener('click', () => {
+                const next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+                localStorage.setItem('theme', next);
+                applyTheme(next);
+            });
+
+            // Apply saved (or system) theme on load
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                applyTheme(savedTheme);
+            } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                applyTheme('dark');
+            } else {
+                applyTheme('light');
+            }
+
+            // --- RTL toggle ---
+            const langToggle = document.getElementById('lang-toggle');
+            const applyDir = (dir) => {
+                html.setAttribute('dir', dir);
+            };
+
+            langToggle?.addEventListener('click', () => {
+                const next = html.getAttribute('dir') === 'rtl' ? 'ltr' : 'rtl';
+                localStorage.setItem('direction', next);
+                applyDir(next);
+            });
+
+            // Apply saved direction on load
+            const savedDir = localStorage.getItem('direction');
+            if (savedDir) applyDir(savedDir);
+        });
+    </script>
+</body>
+</html>
