@@ -199,10 +199,17 @@
     </style>
 </head>
 <body>
-    <!-- Floating Theme/RTL Toggles in the Outside Corner -->
-    <div class="fixed top-6 right-6 rtl:right-auto rtl:left-6 flex gap-3 z-50">
-        <button id="theme-toggle-login" class="p-2 rounded-full hover:bg-accent/10"><i class="fas fa-moon light-icon"></i><i class="fas fa-sun dark-icon hidden"></i></button>
-        <button id="rtl-toggle-login" class="p-2 rounded-full hover:bg-accent/10"><i class="fas fa-exchange-alt"></i></button>
+    <!-- Floating Theme/RTL Toggles in the Outside Corner (exact style & icons as index.html) -->
+    <div class="fixed top-6 right-6 rtl:right-auto rtl:left-6 flex items-center space-x-3 z-50">
+        <button id="theme-toggle-login" class="icon-btn text-primary-text hover:text-accent p-2 rounded-full transition duration-200 bg-hover/60 border border-border/60 shadow-sm" title="Toggle Dark/Light Mode">
+            <svg class="w-5 h-5 light-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+            <svg class="w-5 h-5 dark-icon hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+        </button>
+        <button id="rtl-toggle-login" class="text-primary-text hover:text-accent p-2 rounded-full transition duration-200 bg-hover/60 border border-border/60 shadow-sm" title="Toggle RTL/LTR">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7.5 21 3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
+            </svg>
+        </button>
     </div>
 
     <div class="login-card p-6 md:p-7 shadow-xl animate-fade-in">

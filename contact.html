@@ -816,20 +816,58 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
 
-            <!-- Left: heading block -->
-            <div class="lg:col-span-5 text-center lg:text-start lg:sticky lg:top-28">
-                <span class="inline-block px-3.5 py-1 rounded-full text-xs font-semibold bg-sky-500/10 text-accent uppercase tracking-wider mb-3">
-                    Before You Reach Out
-                </span>
-                <h2 class="font-heading text-3xl sm:text-4xl font-bold text-primary-text leading-tight">
-                    Common Questions<br>Answered
-                </h2>
-                <p class="text-secondary-text mt-3 text-base leading-relaxed">
-                    Quick answers to the questions our team hears most often. If yours isn’t here, the form above is the fastest way to get a direct reply.
-                </p>
+            <!-- Left: heading block + response time stats & quick contacts -->
+            <div class="lg:col-span-5 text-center lg:text-start flex flex-col justify-between h-full">
+                <div>
+                    <span class="inline-block px-3.5 py-1 rounded-full text-xs font-semibold bg-sky-500/10 text-accent uppercase tracking-wider mb-3">
+                        Before You Reach Out
+                    </span>
+                    <h2 class="font-heading text-3xl sm:text-4xl font-bold text-primary-text leading-tight">
+                        Common Questions<br>Answered
+                    </h2>
+                    <p class="text-secondary-text mt-3 text-base leading-relaxed">
+                        Quick answers to the questions our team hears most often. If yours isn’t here, our dispatch specialists and telematics engineers are ready to assist.
+                    </p>
+
+                    <!-- Service Level & Operational Metrics -->
+                    <div class="grid grid-cols-2 gap-3 mt-6">
+                        <div class="p-4 rounded-xl bg-card border border-border">
+                            <div class="text-xl font-heading font-extrabold text-accent">&lt; 12 mins</div>
+                            <div class="text-xs text-secondary-text mt-0.5 font-medium">Avg Support Reply</div>
+                        </div>
+                        <div class="p-4 rounded-xl bg-card border border-border">
+                            <div class="text-xl font-heading font-extrabold text-emerald-500">99.99%</div>
+                            <div class="text-xs text-secondary-text mt-0.5 font-medium">Telemetry Uptime</div>
+                        </div>
+                        <div class="p-4 rounded-xl bg-card border border-border">
+                            <div class="text-xl font-heading font-extrabold text-accent-light">45+</div>
+                            <div class="text-xs text-secondary-text mt-0.5 font-medium">Countries Active</div>
+                        </div>
+                        <div class="p-4 rounded-xl bg-card border border-border">
+                            <div class="text-xl font-heading font-extrabold text-amber-500">24/7/365</div>
+                            <div class="text-xs text-secondary-text mt-0.5 font-medium">Live Grid Monitoring</div>
+                        </div>
+                    </div>
+
+                    <!-- Direct channels pill list -->
+                    <div class="mt-5 p-4 rounded-xl bg-card border border-border space-y-2.5 text-xs text-secondary-text">
+                        <div class="flex items-center gap-2.5">
+                            <i class="fas fa-envelope text-accent w-4 text-center"></i>
+                            <span>General inquiries: <strong class="text-primary-text font-semibold">support@navifleet.io</strong></span>
+                        </div>
+                        <div class="flex items-center gap-2.5">
+                            <i class="fas fa-phone text-emerald-500 w-4 text-center"></i>
+                            <span>Toll-free hotline: <strong class="text-primary-text font-semibold">+1 (800) 555-FLEET</strong></span>
+                        </div>
+                        <div class="flex items-center gap-2.5">
+                            <i class="fas fa-shield-halved text-cyan-500 w-4 text-center"></i>
+                            <span>Priority dispatch: <strong class="text-primary-text font-semibold">Emergency SOS desk</strong></span>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- Quick contact card -->
-                <div class="mt-8 p-5 rounded-2xl bg-card border border-border">
+                <div class="mt-6 p-5 rounded-2xl bg-card border border-border">
                     <div class="flex items-center gap-3 mb-3 justify-center lg:justify-start">
                         <div class="w-10 h-10 rounded-xl bg-sky-500/10 text-accent flex items-center justify-center">
                             <i class="fas fa-comments"></i>
@@ -839,7 +877,7 @@
                             <div class="text-xs text-secondary-text">Live support available 24/7</div>
                         </div>
                     </div>
-                    <a href="#" class="btn-primary inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold w-full justify-center">
+                    <a href="#contact-form" class="btn-primary inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold w-full justify-center shadow-md">
                         <i class="fas fa-comment-dots"></i> Open Live Chat
                     </a>
                 </div>

@@ -199,6 +199,8 @@
     .status-badge {
       padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.7rem;
       font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;
+      white-space: nowrap; display: inline-flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
     }
     .status-badge.active { background-color: var(--color-success); color: white; }
     .status-badge.pending { background-color: var(--color-warning); color: white; }
@@ -459,38 +461,38 @@
               <div class="flex gap-3"><button class="px-6 py-3 btn-primary text-xs font-semibold uppercase tracking-widest"><i class="fas fa-filter mr-1"></i> Filter</button></div>
             </div>
             <div class="space-y-4">
-              <div class="flex items-center justify-between p-4 bg-hover rounded-2xl">
-                <div class="flex gap-3 items-center">
+              <div class="flex items-start sm:items-center justify-between gap-3 p-3.5 sm:p-4 bg-hover rounded-2xl">
+                <div class="flex gap-3 items-center min-w-0">
                   <img src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=120&q=80" alt="Freightliner" class="w-12 h-12 rounded-lg object-cover border border-border shrink-0">
-                  <div>
-                    <p class="font-semibold">FL-9042 • Freightliner Cascadia</p>
-                    <p class="text-xs text-secondary-text mt-0.5">Marcus Vance • I-5 North MP 172</p>
-                    <div class="flex gap-3 mt-1 text-xs text-secondary-text"><span><i class="far fa-check-circle text-success"></i> On schedule</span><span><i class="fas fa-gauge-high"></i> 64 MPH</span></div>
+                  <div class="min-w-0">
+                    <p class="font-semibold text-sm sm:text-base truncate">FL-9042 • Freightliner Cascadia</p>
+                    <p class="text-xs text-secondary-text mt-0.5 truncate">Marcus Vance • I-5 North MP 172</p>
+                    <div class="flex flex-wrap gap-x-3 gap-y-1 mt-1 text-xs text-secondary-text"><span><i class="far fa-check-circle text-success"></i> On schedule</span><span><i class="fas fa-gauge-high"></i> 64 MPH</span></div>
                   </div>
                 </div>
-                <div><span class="status-badge enroute">En Route</span></div>
+                <div class="shrink-0"><span class="status-badge enroute">En Route</span></div>
               </div>
-              <div class="flex items-center justify-between p-4 bg-hover rounded-2xl">
-                <div class="flex gap-3 items-center">
+              <div class="flex items-start sm:items-center justify-between gap-3 p-3.5 sm:p-4 bg-hover rounded-2xl">
+                <div class="flex gap-3 items-center min-w-0">
                   <img src="https://images.unsplash.com/photo-1580674684081-7617fbf3d745?auto=format&fit=crop&w=120&q=80" alt="Sprinter" class="w-12 h-12 rounded-lg object-cover border border-border shrink-0">
-                  <div>
-                    <p class="font-semibold">VN-2104 • Mercedes Sprinter</p>
-                    <p class="text-xs text-secondary-text mt-0.5">Elena Rostova • Downtown Depot 7</p>
-                    <div class="flex gap-3 mt-1 text-xs text-secondary-text"><span><i class="far fa-clock text-warning"></i> Idle 6 mins</span><span><i class="fas fa-gauge-high"></i> 0 MPH</span></div>
+                  <div class="min-w-0">
+                    <p class="font-semibold text-sm sm:text-base truncate">VN-2104 • Mercedes Sprinter</p>
+                    <p class="text-xs text-secondary-text mt-0.5 truncate">Elena Rostova • Downtown Depot 7</p>
+                    <div class="flex flex-wrap gap-x-3 gap-y-1 mt-1 text-xs text-secondary-text"><span><i class="far fa-clock text-warning"></i> Idle 6 mins</span><span><i class="fas fa-gauge-high"></i> 0 MPH</span></div>
                   </div>
                 </div>
-                <div><span class="status-badge pending">Idle</span></div>
+                <div class="shrink-0"><span class="status-badge pending">Idle</span></div>
               </div>
-              <div class="flex items-center justify-between p-4 bg-hover rounded-2xl">
-                <div class="flex gap-3 items-center">
+              <div class="flex items-start sm:items-center justify-between gap-3 p-3.5 sm:p-4 bg-hover rounded-2xl">
+                <div class="flex gap-3 items-center min-w-0">
                   <img src="https://images.unsplash.com/photo-1519003722824-194d4455a60c?auto=format&fit=crop&w=120&q=80" alt="Volvo" class="w-12 h-12 rounded-lg object-cover border border-border shrink-0">
-                  <div>
-                    <p class="font-semibold">FL-8819 • Volvo VNL 860</p>
-                    <p class="text-xs text-secondary-text mt-0.5">Dave Miller • Highway 99 South</p>
-                    <div class="flex gap-3 mt-1 text-xs text-secondary-text"><span><i class="far fa-check-circle text-success"></i> On schedule</span><span><i class="fas fa-gauge-high"></i> 59 MPH</span></div>
+                  <div class="min-w-0">
+                    <p class="font-semibold text-sm sm:text-base truncate">FL-8819 • Volvo VNL 860</p>
+                    <p class="text-xs text-secondary-text mt-0.5 truncate">Dave Miller • Highway 99 South</p>
+                    <div class="flex flex-wrap gap-x-3 gap-y-1 mt-1 text-xs text-secondary-text"><span><i class="far fa-check-circle text-success"></i> On schedule</span><span><i class="fas fa-gauge-high"></i> 59 MPH</span></div>
                   </div>
                 </div>
-                <div><span class="status-badge enroute">En Route</span></div>
+                <div class="shrink-0"><span class="status-badge enroute">En Route</span></div>
               </div>
             </div>
             <div class="mt-6 p-4 bg-hover rounded-2xl text-sm"><i class="fas fa-info-circle text-accent mr-2"></i> All vehicles ping every 5 seconds. Last full sync: 1.2s ago.</div>
@@ -507,9 +509,9 @@
               <div class="p-6 bg-hover rounded-2xl"><h3 class="font-bold text-lg text-accent mb-2">Speed Compliance</h3><p class="text-3xl font-heading font-bold">96.2%</p><p class="text-xs text-secondary-text mt-1">on limit</p></div>
             </div>
             <div class="space-y-3">
-              <div class="flex items-center justify-between p-4 bg-hover rounded-2xl"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center text-accent font-bold">MV</div><div><p class="font-semibold">Marcus Vance (Unit #402)</p><p class="text-xs text-secondary-text">99.4 Safety Score • 14,200 incident-free miles</p></div></div><span class="status-badge active">Top Driver</span></div>
-              <div class="flex items-center justify-between p-4 bg-hover rounded-2xl"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center text-accent font-bold">ER</div><div><p class="font-semibold">Elena Rostova (Unit #2104)</p><p class="text-xs text-secondary-text">94.1 Safety Score • 8,400 incident-free miles</p></div></div><span class="status-badge completed">Good</span></div>
-              <div class="flex items-center justify-between p-4 bg-hover rounded-2xl"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center text-accent font-bold">DM</div><div><p class="font-semibold">Dave Miller (Unit #8819)</p><p class="text-xs text-secondary-text">92.8 Safety Score • 11,200 incident-free miles</p></div></div><span class="status-badge completed">Good</span></div>
+              <div class="flex items-center justify-between gap-3 p-3.5 sm:p-4 bg-hover rounded-2xl"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center text-accent font-bold">MV</div><div><p class="font-semibold">Marcus Vance (Unit #402)</p><p class="text-xs text-secondary-text">99.4 Safety Score • 14,200 incident-free miles</p></div></div><span class="status-badge active">Top Driver</span></div>
+              <div class="flex items-center justify-between gap-3 p-3.5 sm:p-4 bg-hover rounded-2xl"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center text-accent font-bold">ER</div><div><p class="font-semibold">Elena Rostova (Unit #2104)</p><p class="text-xs text-secondary-text">94.1 Safety Score • 8,400 incident-free miles</p></div></div><span class="status-badge completed">Good</span></div>
+              <div class="flex items-center justify-between gap-3 p-3.5 sm:p-4 bg-hover rounded-2xl"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center text-accent font-bold">DM</div><div><p class="font-semibold">Dave Miller (Unit #8819)</p><p class="text-xs text-secondary-text">92.8 Safety Score • 11,200 incident-free miles</p></div></div><span class="status-badge completed">Good</span></div>
             </div>
           </div>
         </div>
@@ -524,9 +526,9 @@
               <div class="p-6 bg-hover rounded-2xl"><h3 class="font-bold text-lg text-accent mb-2">Savings MTD</h3><p class="text-3xl font-heading font-bold">$12,450</p><p class="text-xs text-success mt-1">from fuel theft & idle audits</p></div>
             </div>
             <div class="space-y-3">
-              <div class="flex items-center justify-between p-4 bg-hover rounded-2xl"><div><p class="font-semibold">Operating Account Fuel Spend</p><p class="text-xs text-secondary-text">Month-to-date across 128 units</p></div><span class="font-semibold text-accent">$84,200</span></div>
-              <div class="flex items-center justify-between p-4 bg-hover rounded-2xl"><div><p class="font-semibold">Fuel Theft Detected</p><p class="text-xs text-secondary-text">No unauthorized drainage events</p></div><span class="font-semibold text-success">$0</span></div>
-              <div class="flex items-center justify-between p-4 bg-hover rounded-2xl"><div><p class="font-semibold">Idle Waste</p><p class="text-xs text-secondary-text">4.8% of total engine hours</p></div><span class="font-semibold text-warning">$2,100</span></div>
+              <div class="flex items-center justify-between gap-3 p-3.5 sm:p-4 bg-hover rounded-2xl"><div><p class="font-semibold">Operating Account Fuel Spend</p><p class="text-xs text-secondary-text">Month-to-date across 128 units</p></div><span class="font-semibold text-accent">$84,200</span></div>
+              <div class="flex items-center justify-between gap-3 p-3.5 sm:p-4 bg-hover rounded-2xl"><div><p class="font-semibold">Fuel Theft Detected</p><p class="text-xs text-secondary-text">No unauthorized drainage events</p></div><span class="font-semibold text-success">$0</span></div>
+              <div class="flex items-center justify-between gap-3 p-3.5 sm:p-4 bg-hover rounded-2xl"><div><p class="font-semibold">Idle Waste</p><p class="text-xs text-secondary-text">4.8% of total engine hours</p></div><span class="font-semibold text-warning">$2,100</span></div>
             </div>
             <div class="mt-6 p-4 bg-hover rounded-2xl text-sm"><i class="fas fa-info-circle text-accent mr-2"></i> Fuel data sourced from CAN-bus and digital tank probes. Updated every 5 minutes.</div>
           </div>
@@ -537,9 +539,9 @@
           <div class="dashboard-card p-5 sm:p-7 reveal active">
             <h2 class="text-xl sm:text-2xl font-heading font-bold text-primary-text mb-8 flex items-center gap-2"><span class="text-accent">🔧</span> Predictive Maintenance</h2>
             <div class="space-y-4">
-              <div class="flex items-center justify-between p-4 bg-hover rounded-2xl"><div><p class="font-semibold">FL-9042 · Freightliner Cascadia</p><p class="text-xs text-secondary-text">Next service in 1,420 miles · Oil life 68%</p><div class="flex gap-3 mt-1 text-xs text-secondary-text"><span><i class="fas fa-check-circle text-success"></i> All systems clear</span><span><i class="fas fa-engine"></i> No DTC codes</span></div></div><span class="status-badge completed">Healthy</span></div>
-              <div class="flex items-center justify-between p-4 bg-hover rounded-2xl"><div><p class="font-semibold">VN-2104 · Mercedes Sprinter</p><p class="text-xs text-secondary-text">Next service in 2,100 miles · Brake pads 42%</p><div class="flex gap-3 mt-1 text-xs text-secondary-text"><span><i class="fas fa-triangle-exclamation text-warning"></i> Brake wear monitor</span><span><i class="fas fa-engine"></i> No DTC codes</span></div></div><span class="status-badge pending">Monitor</span></div>
-              <div class="flex items-center justify-between p-4 bg-hover rounded-2xl"><div><p class="font-semibold">FL-8819 · Volvo VNL 860</p><p class="text-xs text-secondary-text">Next service in 3,800 miles · Oil life 82%</p><div class="flex gap-3 mt-1 text-xs text-secondary-text"><span><i class="fas fa-check-circle text-success"></i> All systems clear</span><span><i class="fas fa-engine"></i> No DTC codes</span></div></div><span class="status-badge completed">Healthy</span></div>
+              <div class="flex items-center justify-between gap-3 p-3.5 sm:p-4 bg-hover rounded-2xl"><div><p class="font-semibold">FL-9042 · Freightliner Cascadia</p><p class="text-xs text-secondary-text">Next service in 1,420 miles · Oil life 68%</p><div class="flex gap-3 mt-1 text-xs text-secondary-text"><span><i class="fas fa-check-circle text-success"></i> All systems clear</span><span><i class="fas fa-engine"></i> No DTC codes</span></div></div><span class="status-badge completed">Healthy</span></div>
+              <div class="flex items-center justify-between gap-3 p-3.5 sm:p-4 bg-hover rounded-2xl"><div><p class="font-semibold">VN-2104 · Mercedes Sprinter</p><p class="text-xs text-secondary-text">Next service in 2,100 miles · Brake pads 42%</p><div class="flex gap-3 mt-1 text-xs text-secondary-text"><span><i class="fas fa-triangle-exclamation text-warning"></i> Brake wear monitor</span><span><i class="fas fa-engine"></i> No DTC codes</span></div></div><span class="status-badge pending">Monitor</span></div>
+              <div class="flex items-center justify-between gap-3 p-3.5 sm:p-4 bg-hover rounded-2xl"><div><p class="font-semibold">FL-8819 · Volvo VNL 860</p><p class="text-xs text-secondary-text">Next service in 3,800 miles · Oil life 82%</p><div class="flex gap-3 mt-1 text-xs text-secondary-text"><span><i class="fas fa-check-circle text-success"></i> All systems clear</span><span><i class="fas fa-engine"></i> No DTC codes</span></div></div><span class="status-badge completed">Healthy</span></div>
             </div>
             <div class="mt-6 p-4 bg-hover rounded-2xl text-sm"><i class="fas fa-info-circle text-accent mr-2"></i> DTC codes and fluid levels are pulled live from OBD-II and J1939 telematics gateways.</div>
           </div>
@@ -577,9 +579,9 @@
           <div class="dashboard-card p-5 sm:p-7 reveal active">
             <h2 class="text-xl sm:text-2xl font-heading font-bold text-primary-text mb-8 flex items-center gap-2"><span class="text-accent">📊</span> Telematics Reports</h2>
             <div class="space-y-4">
-              <div class="flex items-center justify-between p-4 bg-hover rounded-2xl"><div><p class="font-semibold">March 2026 · Fleet Fuel & Idle Report</p><p class="text-xs text-secondary-text">Generated Apr 05, 2026 · 128 units</p><p class="text-xs text-accent mt-1"><i class="fas fa-check-circle"></i> Ready for download</p></div><button class="text-accent"><i class="fas fa-download"></i></button></div>
-              <div class="flex items-center justify-between p-4 bg-hover rounded-2xl"><div><p class="font-semibold">March 2026 · Driver Safety Scorecard</p><p class="text-xs text-secondary-text">Generated Apr 05, 2026 · 42 drivers</p><p class="text-xs text-accent mt-1"><i class="fas fa-check-circle"></i> Ready for download</p></div><button class="text-accent"><i class="fas fa-download"></i></button></div>
-              <div class="flex items-center justify-between p-4 bg-hover rounded-2xl"><div><p class="font-semibold">April 2026 · Month-to-Date Telemetry</p><p class="text-xs text-secondary-text">Live · updated every 15 minutes</p><p class="text-xs text-warning mt-1"><i class="fas fa-clock"></i> In progress</p></div><button class="text-secondary-text cursor-not-allowed"><i class="fas fa-download"></i></button></div>
+              <div class="flex items-center justify-between gap-3 p-3.5 sm:p-4 bg-hover rounded-2xl"><div><p class="font-semibold">March 2026 · Fleet Fuel & Idle Report</p><p class="text-xs text-secondary-text">Generated Apr 05, 2026 · 128 units</p><p class="text-xs text-accent mt-1"><i class="fas fa-check-circle"></i> Ready for download</p></div><button class="text-accent"><i class="fas fa-download"></i></button></div>
+              <div class="flex items-center justify-between gap-3 p-3.5 sm:p-4 bg-hover rounded-2xl"><div><p class="font-semibold">March 2026 · Driver Safety Scorecard</p><p class="text-xs text-secondary-text">Generated Apr 05, 2026 · 42 drivers</p><p class="text-xs text-accent mt-1"><i class="fas fa-check-circle"></i> Ready for download</p></div><button class="text-accent"><i class="fas fa-download"></i></button></div>
+              <div class="flex items-center justify-between gap-3 p-3.5 sm:p-4 bg-hover rounded-2xl"><div><p class="font-semibold">April 2026 · Month-to-Date Telemetry</p><p class="text-xs text-secondary-text">Live · updated every 15 minutes</p><p class="text-xs text-warning mt-1"><i class="fas fa-clock"></i> In progress</p></div><button class="text-secondary-text cursor-not-allowed"><i class="fas fa-download"></i></button></div>
             </div>
             <div class="mt-6 p-4 bg-hover rounded-2xl text-sm"><i class="fas fa-info-circle text-accent mr-2"></i> Reports are archived for 12 months. Export to CSV or PDF for ERP integration.</div>
           </div>
@@ -593,16 +595,16 @@
               <div>
                 <h3 class="font-semibold text-lg mb-4 pb-2 border-b border-border">Telemetry Configuration</h3>
                 <div class="space-y-3">
-                  <div class="flex items-center justify-between p-4 bg-hover rounded-xl"><div><p class="font-semibold">GPS Ping Interval</p><p class="text-xs text-secondary-text">Frequency of location updates from vehicles</p></div><select class="bg-card border border-border rounded-lg px-3 py-1.5 text-xs"><option>1 second</option><option selected>5 seconds</option><option>60 seconds</option></select></div>
-                  <div class="flex items-center justify-between p-4 bg-hover rounded-xl"><div><p class="font-semibold">Idle Alert Threshold</p><p class="text-xs text-secondary-text">Notify dispatcher when vehicle idles longer than</p></div><select class="bg-card border border-border rounded-lg px-3 py-1.5 text-xs"><option>3 minutes</option><option selected>5 minutes</option><option>10 minutes</option></select></div>
-                  <div class="flex items-center justify-between p-4 bg-hover rounded-xl"><div><p class="font-semibold">Fuel Theft Alerts</p><p class="text-xs text-secondary-text">Automatic SMS and email on tank level drop</p></div><div class="w-12 h-6 bg-accent rounded-full p-1 cursor-pointer"><span class="block w-4 h-4 bg-white rounded-full ml-auto"></span></div></div>
+                  <div class="flex items-center justify-between gap-3 p-3.5 sm:p-4 bg-hover rounded-xl"><div><p class="font-semibold">GPS Ping Interval</p><p class="text-xs text-secondary-text">Frequency of location updates from vehicles</p></div><select class="bg-card border border-border rounded-lg px-3 py-1.5 text-xs"><option>1 second</option><option selected>5 seconds</option><option>60 seconds</option></select></div>
+                  <div class="flex items-center justify-between gap-3 p-3.5 sm:p-4 bg-hover rounded-xl"><div><p class="font-semibold">Idle Alert Threshold</p><p class="text-xs text-secondary-text">Notify dispatcher when vehicle idles longer than</p></div><select class="bg-card border border-border rounded-lg px-3 py-1.5 text-xs"><option>3 minutes</option><option selected>5 minutes</option><option>10 minutes</option></select></div>
+                  <div class="flex items-center justify-between gap-3 p-3.5 sm:p-4 bg-hover rounded-xl"><div><p class="font-semibold">Fuel Theft Alerts</p><p class="text-xs text-secondary-text">Automatic SMS and email on tank level drop</p></div><div class="w-12 h-6 bg-accent rounded-full p-1 cursor-pointer"><span class="block w-4 h-4 bg-white rounded-full ml-auto"></span></div></div>
                 </div>
               </div>
               <div>
                 <h3 class="font-semibold text-lg mb-4 pb-2 border-b border-border">Driver Score Thresholds</h3>
                 <div class="space-y-3">
-                  <div class="flex items-center justify-between p-4 bg-hover rounded-xl"><div><p class="font-semibold">Harsh Braking Limit</p><p class="text-xs text-secondary-text">Events per 100 miles</p></div><select class="bg-card border border-border rounded-lg px-3 py-1.5 text-xs"><option>0.5</option><option selected>1.0</option><option>2.0</option></select></div>
-                  <div class="flex items-center justify-between p-4 bg-hover rounded-xl"><div><p class="font-semibold">Speeding Tolerance</p><p class="text-xs text-secondary-text">Allowable over-speed before alert</p></div><select class="bg-card border border-border rounded-lg px-3 py-1.5 text-xs"><option>5 MPH</option><option selected>10 MPH</option><option>15 MPH</option></select></div>
+                  <div class="flex items-center justify-between gap-3 p-3.5 sm:p-4 bg-hover rounded-xl"><div><p class="font-semibold">Harsh Braking Limit</p><p class="text-xs text-secondary-text">Events per 100 miles</p></div><select class="bg-card border border-border rounded-lg px-3 py-1.5 text-xs"><option>0.5</option><option selected>1.0</option><option>2.0</option></select></div>
+                  <div class="flex items-center justify-between gap-3 p-3.5 sm:p-4 bg-hover rounded-xl"><div><p class="font-semibold">Speeding Tolerance</p><p class="text-xs text-secondary-text">Allowable over-speed before alert</p></div><select class="bg-card border border-border rounded-lg px-3 py-1.5 text-xs"><option>5 MPH</option><option selected>10 MPH</option><option>15 MPH</option></select></div>
                 </div>
               </div>
               <div class="pt-4 flex gap-4"><button class="btn-primary px-8 py-3 text-xs font-semibold uppercase tracking-widest">Save Changes</button><button class="border border-border px-8 py-3 rounded-full text-xs font-semibold uppercase tracking-widest hover:bg-hover">Cancel</button></div>

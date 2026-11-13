@@ -199,6 +199,8 @@
     .status-badge {
       padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.7rem;
       font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;
+      white-space: nowrap; display: inline-flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
     }
     .status-badge.active { background-color: var(--color-success); color: white; }
     .status-badge.pending { background-color: var(--color-warning); color: white; }
@@ -429,15 +431,15 @@
               <div class="flex gap-3"><button class="px-6 py-3 btn-primary text-xs font-semibold uppercase tracking-widest"><i class="fas fa-filter mr-1"></i> Filter</button></div>
             </div>
             <div class="space-y-4">
-              <div class="flex items-center justify-between p-4 bg-hover rounded-2xl">
+              <div class="flex items-center justify-between gap-3 p-3.5 sm:p-4 bg-hover rounded-2xl">
                 <div class="flex items-center gap-4"><div class="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center"><i class="fas fa-truck-fast text-accent text-xl"></i></div><div><p class="font-semibold">Pacific Freight Lines · Enterprise</p><p class="text-xs text-secondary-text mt-1">128 devices · MRR $4,200 · Region: US-West</p><div class="flex gap-3 mt-1 text-xs text-secondary-text"><span><i class="far fa-check-circle text-success"></i> Active</span><span><i class="fas fa-satellite-dish"></i> 126 online</span></div></div></div>
                 <div><span class="status-badge active">Active</span></div>
               </div>
-              <div class="flex items-center justify-between p-4 bg-hover rounded-2xl">
+              <div class="flex items-center justify-between gap-3 p-3.5 sm:p-4 bg-hover rounded-2xl">
                 <div class="flex items-center gap-4"><div class="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center"><i class="fas fa-box text-accent text-xl"></i></div><div><p class="font-semibold">Metro Courier Co · Professional</p><p class="text-xs text-secondary-text mt-1">42 devices · MRR $1,800 · Region: US-East</p><div class="flex gap-3 mt-1 text-xs text-secondary-text"><span><i class="far fa-check-circle text-success"></i> Active</span><span><i class="fas fa-satellite-dish"></i> 42 online</span></div></div></div>
                 <div><span class="status-badge active">Active</span></div>
               </div>
-              <div class="flex items-center justify-between p-4 bg-hover rounded-2xl">
+              <div class="flex items-center justify-between gap-3 p-3.5 sm:p-4 bg-hover rounded-2xl">
                 <div class="flex items-center gap-4"><div class="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center"><i class="fas fa-bus text-accent text-xl"></i></div><div><p class="font-semibold">City Transit Authority · Enterprise</p><p class="text-xs text-secondary-text mt-1">210 devices · MRR $6,500 · Region: EU-Central</p><div class="flex gap-3 mt-1 text-xs text-secondary-text"><span><i class="fas fa-triangle-exclamation text-warning"></i> 2 offline devices</span><span><i class="fas fa-satellite-dish"></i> 208 online</span></div></div></div>
                 <div><span class="status-badge pending">Attention</span></div>
               </div>
@@ -456,9 +458,9 @@
               <div class="p-6 bg-hover rounded-2xl"><h3 class="font-bold text-lg text-accent mb-2">Collected (MTD)</h3><p class="text-3xl font-heading font-bold">$82.3k</p><p class="text-xs text-success mt-1">87% of target</p></div>
             </div>
             <div class="space-y-3">
-              <div class="flex items-center justify-between p-4 bg-hover rounded-2xl"><div><p class="font-semibold">Pacific Freight Lines</p><p class="text-xs text-secondary-text">Enterprise · $4,200/mo · 128 devices</p></div><span class="status-badge completed">Paid</span></div>
-              <div class="flex items-center justify-between p-4 bg-hover rounded-2xl"><div><p class="font-semibold">Metro Courier Co</p><p class="text-xs text-secondary-text">Professional · $1,800/mo · 42 devices</p></div><span class="status-badge completed">Paid</span></div>
-              <div class="flex items-center justify-between p-4 bg-hover rounded-2xl"><div><p class="font-semibold">City Transit Authority</p><p class="text-xs text-secondary-text">Enterprise · $6,500/mo · 210 devices</p></div><span class="status-badge pending">Overdue</span></div>
+              <div class="flex items-center justify-between gap-3 p-3.5 sm:p-4 bg-hover rounded-2xl"><div><p class="font-semibold">Pacific Freight Lines</p><p class="text-xs text-secondary-text">Enterprise · $4,200/mo · 128 devices</p></div><span class="status-badge completed">Paid</span></div>
+              <div class="flex items-center justify-between gap-3 p-3.5 sm:p-4 bg-hover rounded-2xl"><div><p class="font-semibold">Metro Courier Co</p><p class="text-xs text-secondary-text">Professional · $1,800/mo · 42 devices</p></div><span class="status-badge completed">Paid</span></div>
+              <div class="flex items-center justify-between gap-3 p-3.5 sm:p-4 bg-hover rounded-2xl"><div><p class="font-semibold">City Transit Authority</p><p class="text-xs text-secondary-text">Enterprise · $6,500/mo · 210 devices</p></div><span class="status-badge pending">Overdue</span></div>
             </div>
           </div>
         </div>
@@ -473,9 +475,9 @@
               <div class="p-6 bg-hover rounded-2xl"><h3 class="font-bold text-lg text-accent mb-2">Offline</h3><p class="text-3xl font-heading font-bold">4</p><p class="text-xs text-warning mt-1">requires attention</p></div>
             </div>
             <div class="space-y-3">
-              <div class="flex items-center justify-between p-4 bg-hover rounded-2xl"><div><p class="font-semibold">OBD-II Gateway · Batch #2026-X4</p><p class="text-xs text-secondary-text">Firmware v4.2.1 · deployed to 280 units</p></div><span class="status-badge active">Online</span></div>
-              <div class="flex items-center justify-between p-4 bg-hover rounded-2xl"><div><p class="font-semibold">J1939 Heavy-Duty Gateway · Batch #2026-Y1</p><p class="text-xs text-secondary-text">Firmware v3.8.0 · deployed to 80 units</p></div><span class="status-badge active">Online</span></div>
-              <div class="flex items-center justify-between p-4 bg-hover rounded-2xl"><div><p class="font-semibold">BLE Cargo Sensor · Batch #2026-Z2</p><p class="text-xs text-secondary-text">Firmware v2.1.4 · 4 units offline</p></div><span class="status-badge pending">Partial</span></div>
+              <div class="flex items-center justify-between gap-3 p-3.5 sm:p-4 bg-hover rounded-2xl"><div><p class="font-semibold">OBD-II Gateway · Batch #2026-X4</p><p class="text-xs text-secondary-text">Firmware v4.2.1 · deployed to 280 units</p></div><span class="status-badge active">Online</span></div>
+              <div class="flex items-center justify-between gap-3 p-3.5 sm:p-4 bg-hover rounded-2xl"><div><p class="font-semibold">J1939 Heavy-Duty Gateway · Batch #2026-Y1</p><p class="text-xs text-secondary-text">Firmware v3.8.0 · deployed to 80 units</p></div><span class="status-badge active">Online</span></div>
+              <div class="flex items-center justify-between gap-3 p-3.5 sm:p-4 bg-hover rounded-2xl"><div><p class="font-semibold">BLE Cargo Sensor · Batch #2026-Z2</p><p class="text-xs text-secondary-text">Firmware v2.1.4 · 4 units offline</p></div><span class="status-badge pending">Partial</span></div>
             </div>
             <div class="mt-6 p-4 bg-hover rounded-2xl text-sm"><i class="fas fa-info-circle text-accent mr-2"></i> Firmware updates can be pushed remotely via OTA. Devices must be online to receive them.</div>
           </div>
@@ -486,10 +488,10 @@
           <div class="dashboard-card p-5 sm:p-7 reveal active">
             <h2 class="text-xl sm:text-2xl font-heading font-bold text-primary-text mb-8 flex items-center gap-2"><span class="text-accent">📶</span> SIM & Connectivity</h2>
             <div class="space-y-4">
-              <div class="flex items-center justify-between p-4 bg-hover rounded-2xl"><div><p class="font-semibold">Fleet Data Pool · North America</p><p class="text-xs text-secondary-text">240 GB / 500 GB used · 48% remaining</p></div><span class="status-badge active">Healthy</span></div>
-              <div class="flex items-center justify-between p-4 bg-hover rounded-2xl"><div><p class="font-semibold">Fleet Data Pool · Europe</p><p class="text-xs text-secondary-text">85 GB / 250 GB used · 66% remaining</p></div><span class="status-badge active">Healthy</span></div>
-              <div class="flex items-center justify-between p-4 bg-hover rounded-2xl"><div><p class="font-semibold">APAC Data Pool</p><p class="text-xs text-secondary-text">45 GB / 100 GB used · 55% remaining</p></div><span class="status-badge completed">Normal</span></div>
-              <div class="flex items-center justify-between p-4 bg-hover rounded-2xl"><div><p class="font-semibold">4G/LTE Carrier Agreements</p><p class="text-xs text-secondary-text">3 active carriers · fallback enabled</p></div><span class="status-badge active">Connected</span></div>
+              <div class="flex items-center justify-between gap-3 p-3.5 sm:p-4 bg-hover rounded-2xl"><div><p class="font-semibold">Fleet Data Pool · North America</p><p class="text-xs text-secondary-text">240 GB / 500 GB used · 48% remaining</p></div><span class="status-badge active">Healthy</span></div>
+              <div class="flex items-center justify-between gap-3 p-3.5 sm:p-4 bg-hover rounded-2xl"><div><p class="font-semibold">Fleet Data Pool · Europe</p><p class="text-xs text-secondary-text">85 GB / 250 GB used · 66% remaining</p></div><span class="status-badge active">Healthy</span></div>
+              <div class="flex items-center justify-between gap-3 p-3.5 sm:p-4 bg-hover rounded-2xl"><div><p class="font-semibold">APAC Data Pool</p><p class="text-xs text-secondary-text">45 GB / 100 GB used · 55% remaining</p></div><span class="status-badge completed">Normal</span></div>
+              <div class="flex items-center justify-between gap-3 p-3.5 sm:p-4 bg-hover rounded-2xl"><div><p class="font-semibold">4G/LTE Carrier Agreements</p><p class="text-xs text-secondary-text">3 active carriers · fallback enabled</p></div><span class="status-badge active">Connected</span></div>
             </div>
             <div class="mt-6 p-4 bg-hover rounded-2xl text-sm"><i class="fas fa-info-circle text-accent mr-2"></i> SIM data plans can be adjusted per account. Overage alerts trigger at 90% usage.</div>
           </div>
@@ -500,15 +502,15 @@
           <div class="dashboard-card p-5 sm:p-7 reveal active">
             <h2 class="text-xl sm:text-2xl font-heading font-bold text-primary-text mb-8 flex items-center gap-2"><span class="text-accent">🎫</span> Support Tickets</h2>
             <div class="space-y-4">
-              <div class="flex items-center justify-between p-4 bg-hover rounded-2xl">
+              <div class="flex items-center justify-between gap-3 p-3.5 sm:p-4 bg-hover rounded-2xl">
                 <div><p class="font-semibold">City Transit Authority · Device Offline (2 units)</p><p class="text-xs text-secondary-text">Priority: High · Opened 2h ago</p></div>
                 <div class="flex gap-2"><span class="status-badge cancelled">Urgent</span><button class="text-accent"><i class="fas fa-eye"></i></button></div>
               </div>
-              <div class="flex items-center justify-between p-4 bg-hover rounded-2xl">
+              <div class="flex items-center justify-between gap-3 p-3.5 sm:p-4 bg-hover rounded-2xl">
                 <div><p class="font-semibold">Metro Courier Co · SIM Data Plan Upgrade</p><p class="text-xs text-secondary-text">Priority: Normal · Opened 5h ago</p></div>
                 <div class="flex gap-2"><span class="status-badge pending">Normal</span><button class="text-accent"><i class="fas fa-eye"></i></button></div>
               </div>
-              <div class="flex items-center justify-between p-4 bg-hover rounded-2xl">
+              <div class="flex items-center justify-between gap-3 p-3.5 sm:p-4 bg-hover rounded-2xl">
                 <div><p class="font-semibold">Pacific Freight Lines · Firmware Update Request</p><p class="text-xs text-secondary-text">Priority: Normal · Opened 1 day ago</p></div>
                 <div class="flex gap-2"><span class="status-badge pending">Normal</span><button class="text-accent"><i class="fas fa-eye"></i></button></div>
               </div>
@@ -522,10 +524,10 @@
           <div class="dashboard-card p-5 sm:p-7 reveal active">
             <h2 class="text-xl sm:text-2xl font-heading font-bold text-primary-text mb-8 flex items-center gap-2"><span class="text-accent">👨‍💼</span> Internal Team</h2>
             <div class="space-y-3">
-              <div class="flex items-center justify-between p-4 bg-hover rounded-2xl"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center text-accent"><i class="fas fa-user-shield"></i></div><div><p class="font-semibold">Jordan Blake</p><p class="text-xs text-secondary-text">Platform Ops · Admin</p></div></div><span class="status-badge active">Online</span></div>
-              <div class="flex items-center justify-between p-4 bg-hover rounded-2xl"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center text-accent"><i class="fas fa-user-gear"></i></div><div><p class="font-semibold">Priya Nair</p><p class="text-xs text-secondary-text">Telematics Engineer</p></div></div><span class="status-badge active">Online</span></div>
-              <div class="flex items-center justify-between p-4 bg-hover rounded-2xl"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center text-accent"><i class="fas fa-user-headset"></i></div><div><p class="font-semibold">Marcus Vance</p><p class="text-xs text-secondary-text">Support Lead</p></div></div><span class="status-badge pending">In call</span></div>
-              <div class="flex items-center justify-between p-4 bg-hover rounded-2xl"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center text-accent"><i class="fas fa-user-tie"></i></div><div><p class="font-semibold">Elena Rostova</p><p class="text-xs text-secondary-text">Account Manager</p></div></div><span class="status-badge active">Online</span></div>
+              <div class="flex items-center justify-between gap-3 p-3.5 sm:p-4 bg-hover rounded-2xl"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center text-accent"><i class="fas fa-user-shield"></i></div><div><p class="font-semibold">Jordan Blake</p><p class="text-xs text-secondary-text">Platform Ops · Admin</p></div></div><span class="status-badge active">Online</span></div>
+              <div class="flex items-center justify-between gap-3 p-3.5 sm:p-4 bg-hover rounded-2xl"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center text-accent"><i class="fas fa-user-gear"></i></div><div><p class="font-semibold">Priya Nair</p><p class="text-xs text-secondary-text">Telematics Engineer</p></div></div><span class="status-badge active">Online</span></div>
+              <div class="flex items-center justify-between gap-3 p-3.5 sm:p-4 bg-hover rounded-2xl"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center text-accent"><i class="fas fa-user-headset"></i></div><div><p class="font-semibold">Marcus Vance</p><p class="text-xs text-secondary-text">Support Lead</p></div></div><span class="status-badge pending">In call</span></div>
+              <div class="flex items-center justify-between gap-3 p-3.5 sm:p-4 bg-hover rounded-2xl"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center text-accent"><i class="fas fa-user-tie"></i></div><div><p class="font-semibold">Elena Rostova</p><p class="text-xs text-secondary-text">Account Manager</p></div></div><span class="status-badge active">Online</span></div>
             </div>
           </div>
         </div>
@@ -538,16 +540,16 @@
               <div>
                 <h3 class="font-semibold text-lg mb-4 pb-2 border-b border-border">Telemetry & Device Configuration</h3>
                 <div class="space-y-3">
-                  <div class="flex items-center justify-between p-4 bg-hover rounded-xl"><div><p class="font-semibold">Auto-provision new devices</p><p class="text-xs text-secondary-text">Assign SIM and firmware on first boot</p></div><div class="w-12 h-6 bg-accent rounded-full p-1 cursor-pointer"><span class="block w-4 h-4 bg-white rounded-full ml-auto"></span></div></div>
-                  <div class="flex items-center justify-between p-4 bg-hover rounded-xl"><div><p class="font-semibold">OTA firmware updates</p><p class="text-xs text-secondary-text">Push firmware to online devices in batches</p></div><div class="w-12 h-6 bg-accent rounded-full p-1 cursor-pointer"><span class="block w-4 h-4 bg-white rounded-full ml-auto"></span></div></div>
-                  <div class="flex items-center justify-between p-4 bg-hover rounded-xl"><div><p class="font-semibold">Device offline alerts</p><p class="text-xs text-secondary-text">Notify account manager after 5 min offline</p></div><div class="w-12 h-6 bg-accent rounded-full p-1 cursor-pointer"><span class="block w-4 h-4 bg-white rounded-full ml-auto"></span></div></div>
+                  <div class="flex items-center justify-between gap-3 p-3.5 sm:p-4 bg-hover rounded-xl"><div><p class="font-semibold">Auto-provision new devices</p><p class="text-xs text-secondary-text">Assign SIM and firmware on first boot</p></div><div class="w-12 h-6 bg-accent rounded-full p-1 cursor-pointer"><span class="block w-4 h-4 bg-white rounded-full ml-auto"></span></div></div>
+                  <div class="flex items-center justify-between gap-3 p-3.5 sm:p-4 bg-hover rounded-xl"><div><p class="font-semibold">OTA firmware updates</p><p class="text-xs text-secondary-text">Push firmware to online devices in batches</p></div><div class="w-12 h-6 bg-accent rounded-full p-1 cursor-pointer"><span class="block w-4 h-4 bg-white rounded-full ml-auto"></span></div></div>
+                  <div class="flex items-center justify-between gap-3 p-3.5 sm:p-4 bg-hover rounded-xl"><div><p class="font-semibold">Device offline alerts</p><p class="text-xs text-secondary-text">Notify account manager after 5 min offline</p></div><div class="w-12 h-6 bg-accent rounded-full p-1 cursor-pointer"><span class="block w-4 h-4 bg-white rounded-full ml-auto"></span></div></div>
                 </div>
               </div>
               <div>
                 <h3 class="font-semibold text-lg mb-4 pb-2 border-b border-border">Billing & Account Management</h3>
                 <div class="space-y-3">
-                  <div class="flex items-center justify-between p-4 bg-hover rounded-xl"><div><p class="font-semibold">Auto-invoice on renewal date</p><p class="text-xs text-secondary-text">Generate invoices 7 days before renewal</p></div><div class="w-12 h-6 bg-accent rounded-full p-1 cursor-pointer"><span class="block w-4 h-4 bg-white rounded-full ml-auto"></span></div></div>
-                  <div class="flex items-center justify-between p-4 bg-hover rounded-xl"><div><p class="font-semibold">Grace period for overdue accounts</p><p class="text-xs text-secondary-text">Suspend telematics after</p></div><select class="bg-card border border-border rounded-lg px-3 py-1.5 text-xs"><option>3 days</option><option selected>7 days</option><option>14 days</option></select></div>
+                  <div class="flex items-center justify-between gap-3 p-3.5 sm:p-4 bg-hover rounded-xl"><div><p class="font-semibold">Auto-invoice on renewal date</p><p class="text-xs text-secondary-text">Generate invoices 7 days before renewal</p></div><div class="w-12 h-6 bg-accent rounded-full p-1 cursor-pointer"><span class="block w-4 h-4 bg-white rounded-full ml-auto"></span></div></div>
+                  <div class="flex items-center justify-between gap-3 p-3.5 sm:p-4 bg-hover rounded-xl"><div><p class="font-semibold">Grace period for overdue accounts</p><p class="text-xs text-secondary-text">Suspend telematics after</p></div><select class="bg-card border border-border rounded-lg px-3 py-1.5 text-xs"><option>3 days</option><option selected>7 days</option><option>14 days</option></select></div>
                 </div>
               </div>
               <div class="pt-4 flex gap-4"><button class="btn-primary px-8 py-3 text-xs font-semibold uppercase tracking-widest">Save Changes</button><button class="border border-border px-8 py-3 rounded-full text-xs font-semibold uppercase tracking-widest hover:bg-hover">Cancel</button></div>
